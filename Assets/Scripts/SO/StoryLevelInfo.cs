@@ -8,6 +8,10 @@ namespace LD59.SO
     {
         public TextAsset Intro;
         public StoryTrain[] Trains;
+
+        [Header("Story")]
+        public bool FreeJunctions;
+        public bool FreeSignals;
     }
 
     [System.Serializable]

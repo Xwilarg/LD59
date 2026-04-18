@@ -148,6 +148,17 @@ namespace LD59.Manager
                             WarningManager.Instance.ShowWarning("This tile can't be modified");
                             return;
                         }
+
+                        if (elem.Exits == _tileRail.Exits)
+                        {
+                            return; // No new exit
+                        }
+
+                        if (!StoryManager.Instance.CanUseJunctions)
+                        {
+                            WarningManager.Instance.ShowWarning("You can't build junctions yet, use the erased if you missplaced a rail");
+                            return;
+                        }
                         elem.Exits = _tileRail.Exits;
                         elem.transform.rotation = Quaternion.Euler(0f, 0f, _tileRail.transform.rotation.eulerAngles.z);
                         elem.SR.sprite = _tileRail.SR.sprite;

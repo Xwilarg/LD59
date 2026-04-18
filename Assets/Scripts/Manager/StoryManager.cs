@@ -1,10 +1,9 @@
-﻿using Ink.Parsed;
-using LD59.SO;
+﻿using LD59.SO;
 using Sketch.VN;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LD59.Manager
 {
@@ -19,8 +18,14 @@ namespace LD59.Manager
         [SerializeField]
         private GameObject _readyUp;
 
+        [SerializeField]
+        private Button _signalBtn;
+
         private float _timer;
         private bool _isPlaying = false;
+
+        public bool CanUseJunctions { private set; get; }
+        public bool CanUseSignals { private set; get; }
 
         private readonly List<TrainTime> _trains = new();
 
@@ -77,8 +82,9 @@ namespace LD59.Manager
             _timer = 0f;
             _isPlaying = true;
 
+            var story = _stories[_storyIndex];
             int id = 1;
-            foreach (var t in _stories[_storyIndex].Trains)
+            foreach (var t in story.Trains)
             {
                 var label = $"{t.From.ToString()[0]}{t.To.ToString()[0]}{id:00}";
                 _trains.Add(new()
@@ -88,6 +94,15 @@ namespace LD59.Manager
                     Label = label
                 });
                 id++;
+            }
+            if (story.FreeJunctions)
+            {
+                CanUseJunctions = true;
+                _signalBtn.interactable = true;
+            }
+            if (story.FreeSignals)
+            {
+                _signalBtn.interactable = true;
             }
             _storyIndex++;
 
