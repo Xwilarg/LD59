@@ -117,10 +117,16 @@ namespace LD59.Map
 
         public Exit GetExit(Exit source)
         {
-            if (source != Exit.Up && Exits.HasFlag(Exit.Up)) return Exit.Up;
-            if (source != Exit.Down && Exits.HasFlag(Exit.Down)) return Exit.Down;
-            if (source != Exit.Left && Exits.HasFlag(Exit.Left)) return Exit.Left;
-            return Exit.Right;
+            var path = _allPaths[_pathIndex];
+            var possibles = path.E1 | path.E2;
+
+            if (!possibles.HasFlag(source)) return Exit.None; // Track not accessible
+
+            if (source != Exit.Up && possibles.HasFlag(Exit.Up)) return Exit.Up;
+            if (source != Exit.Down && possibles.HasFlag(Exit.Down)) return Exit.Down;
+            if (source != Exit.Left && possibles.HasFlag(Exit.Left)) return Exit.Left;
+            if (source != Exit.Right && possibles.HasFlag(Exit.Right)) return Exit.Right;
+            return Exit.None;
         }
 
         public static Vector2Int GetDirection(Exit direction)

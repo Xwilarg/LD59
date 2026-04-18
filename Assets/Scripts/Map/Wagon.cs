@@ -58,15 +58,22 @@ namespace LD59.Map
                     {
                         if (tile.Platform != null)
                         {
-                            Debug.Log("Train reached platform");
                             Destroy(gameObject);
                             return;
                         }
 
                         Direction = tile.GetExit(Revert());
-                        // Debug.Log($"Next exit it toward {Direction}");
-                        _nextPos = TilePos + Rail.GetDirection(Direction);
-                        CalculateBorders();
+
+                        if (Direction == Exit.None)
+                        {
+                            Crash("Train reached missconfigured junction");
+                        }
+                        else
+                        {
+                            // Debug.Log($"Next exit it toward {Direction}");
+                            _nextPos = TilePos + Rail.GetDirection(Direction);
+                            CalculateBorders();
+                        }
                     }
                     else
                     {
