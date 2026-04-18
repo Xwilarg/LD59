@@ -19,7 +19,7 @@ namespace LD59.Manager
         private GameObject _readyUp;
 
         [SerializeField]
-        private Button _signalBtn;
+        private Button _junctionBtn, _signalBtn;
 
         private float _timer;
         private bool _isPlaying = false;
@@ -52,6 +52,8 @@ namespace LD59.Manager
 
         private void Update()
         {
+            if (!_isPlaying) return;
+
             _timer += Time.deltaTime;
             foreach (var t in _trains)
             {
@@ -74,6 +76,17 @@ namespace LD59.Manager
             VNManager.Instance.ShowStory(_stories[_storyIndex].Intro, onDone: () =>
             {
                 _readyUp.SetActive(true);
+
+                var story = _stories[_storyIndex];
+                if (story.FreeJunctions)
+                {
+                    CanUseJunctions = true;
+                    _junctionBtn.interactable = true;
+                }
+                if (story.FreeSignals)
+                {
+                    _signalBtn.interactable = true;
+                }
             });
         }
 
@@ -95,15 +108,6 @@ namespace LD59.Manager
                 });
                 id++;
             }
-            if (story.FreeJunctions)
-            {
-                CanUseJunctions = true;
-                _signalBtn.interactable = true;
-            }
-            if (story.FreeSignals)
-            {
-                _signalBtn.interactable = true;
-            }
             _storyIndex++;
 
             _readyUp.SetActive(false);
@@ -112,7 +116,13 @@ namespace LD59.Manager
         public void ArriveTrain(string label)
         {
             _trains.First(x => x.Label == label).Status = TrainStatus.Arrived;
-            ShowNextStory();
+
+            if (_trains.All(x => x.Status == TrainStatus.Arrived))
+            {
+                _storyIndex++;
+                GameStateManager.Instance.OnReset.Invoke();
+                ShowNextStory();
+            }
         }
     }
 

@@ -26,8 +26,9 @@ namespace LD59.Manager
         {
             GameStateManager.Instance.OnReset.AddListener(OnReset);
 
-            PlacePlatform(new(0, -7), Exit.Up, Vector2Int.down, Station.Arieta);
-            PlacePlatform(new(2, 7), Exit.Down, Vector2Int.up, Station.Sorena);
+            PlacePlatform(new(0, -10), Exit.Up, Vector2Int.down, Station.Arieta);
+            PlacePlatform(new(2, 10), Exit.Down, Vector2Int.up, Station.Sorena);
+            PlacePlatform(new(-15, 0), Exit.Right, Vector2Int.left, Station.Esie);
         }
 
         public static string StationToName(Station station)
@@ -36,6 +37,7 @@ namespace LD59.Manager
             {
                 Station.Arieta => "Ariëta",
                 Station.Sorena => "Sörena",
+                Station.Esie => "Ësie",
                 _ => "Unnamed"
             };
         }
@@ -46,6 +48,7 @@ namespace LD59.Manager
             for (int i = 0; i < PlatformLength; i++)
             {
                 var go = Instantiate(_railPrefab, (Vector2)(pos + (prolongation * i)) * GridManager.GridWorld, Quaternion.identity);
+                go.transform.rotation = Quaternion.Euler(0f, 0f, (usedExit == Exit.Left || usedExit == Exit.Right) ? 90f : 0f);
                 var rail = go.GetComponent<Rail>();
                 var rs = SpriteManager.Instance.GetPlatform();
                 rail.IsHint = false;
@@ -111,7 +114,8 @@ namespace LD59.Manager
     public enum Station
     {
         Arieta,
-        Sorena
+        Sorena,
+        Esie
     }
 
     public class Platform
