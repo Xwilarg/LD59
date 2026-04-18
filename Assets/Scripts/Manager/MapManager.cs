@@ -13,6 +13,8 @@ namespace LD59.Manager
 
         private readonly List<Platform> _platforms = new();
 
+        private const int PlatformLength = 5;
+
         private void Awake()
         {
             Instance = this;
@@ -20,36 +22,44 @@ namespace LD59.Manager
 
         private void Start()
         {
-            PlacePlatform(new(0, -7), Exit.Up);
+            PlacePlatform(new(0, -7), Exit.Up, Vector2Int.down);
         }
 
-        private void PlacePlatform(Vector2Int pos, Exit usedExit)
+        private void PlacePlatform(Vector2Int pos, Exit usedExit, Vector2Int prolongation)
         {
-            var go = Instantiate(_railPrefab, (Vector2)pos * GridManager.GridWorld, Quaternion.identity);
-            var rail = go.GetComponent<Rail>();
-            var platform = SpriteManager.Instance.GetPlatform();
-            rail.SR.sprite = platform.Sprite;
-            rail.Exits = platform.Exits;
-            rail.CanOverrides = false;
-            GridManager.Instance.Register(pos, rail);
+            for (int i = 0; i < PlatformLength; i++)
+            {
+                var go = Instantiate(_railPrefab, (Vector2)(pos + (prolongation * i)) * GridManager.GridWorld, Quaternion.identity);
+                var rail = go.GetComponent<Rail>();
+                var platform = SpriteManager.Instance.GetPlatform();
+                rail.SR.sprite = platform.Sprite;
+                rail.Exits = platform.Exits;
+                rail.CanOverrides = false;
+                GridManager.Instance.Register(pos + (prolongation * i), rail);
 
-            _platforms.Add(new() { Position = pos, Exit = usedExit });
+                if (i == 0) _platforms.Add(new() { PositionStart = pos, PositionEnd = pos + (prolongation * PlatformLength), Prolongation = prolongation,  Exit = usedExit });
+            }
         }
 
         public void SpawnTrain()
         {
             var platform = _platforms[Random.Range(0, _platforms.Count)];
 
-            var trainGo = Instantiate(_trainPrefab, (Vector2)platform.Position * GridManager.GridWorld, Quaternion.identity);
-            var wagon = trainGo.GetComponent<Wagon>();
-            wagon.TilePos = platform.Position;
-            wagon.Direction = platform.Exit;
+            for (int i = 0; i < PlatformLength; i++)
+            {
+                var trainGo = Instantiate(_trainPrefab, (Vector2)(platform.PositionStart + (platform.Prolongation * i)) * GridManager.GridWorld, Quaternion.identity);
+                var wagon = trainGo.GetComponent<Wagon>();
+                wagon.TilePos = platform.PositionStart + (platform.Prolongation * i);
+                wagon.Direction = platform.Exit;
+            }
         }
     }
 
     public class Platform
     {
-        public Vector2Int Position;
+        public Vector2Int PositionStart;
+        public Vector2Int PositionEnd;
+        public Vector2Int Prolongation;
         public Exit Exit;
     }
 }

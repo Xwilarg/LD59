@@ -1,5 +1,4 @@
 ﻿using LD59.Manager;
-using Mono.Cecil.Cil;
 using UnityEngine;
 
 namespace LD59.Map
@@ -33,16 +32,16 @@ namespace LD59.Map
                 _timer -= 1f;
                 _lastPos = TilePos;
                 TilePos = _nextPos;
-                Debug.Log($"Railed passed, current at {TilePos} going to {_nextPos} (opposite exit is {Revert()})");
+                // Debug.Log($"Railed passed, current at {TilePos} going to {_nextPos} (opposite exit is {Revert()})");
 
                 if (GridManager.Instance.Has(TilePos))
                 {
                     var tile = GridManager.Instance.Get(TilePos);
-                    Debug.Log($"Tile at {TilePos} have the following exists: {tile.Exits}");
+                    // Debug.Log($"Tile at {TilePos} have the following exists: {tile.Exits}");
                     if (tile.Exits.HasFlag(Revert()))
                     {
                         Direction = tile.GetExit(Revert());
-                        Debug.Log($"Next exit it toward {Direction}");
+                        // Debug.Log($"Next exit it toward {Direction}");
                         _nextPos = TilePos + GetDirection();
                     }
                     else
@@ -59,6 +58,9 @@ namespace LD59.Map
             _startPos = ((Vector2)(TilePos + _lastPos) / 2f) * GridManager.GridWorld;
             _endPos = ((Vector2)(TilePos + _nextPos) / 2f) * GridManager.GridWorld;
             transform.position = Vector2.Lerp(_startPos, _endPos, _timer);
+
+            var rot = Mathf.Atan2(_endPos.y - _startPos.y, _endPos.x - _startPos.x) * Mathf.Rad2Deg + 90f;
+            transform.rotation = Quaternion.Euler(0f, 0f, rot);
         }
 
         public void Crash(string reason)
