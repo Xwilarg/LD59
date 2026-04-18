@@ -26,9 +26,10 @@ namespace LD59.Manager
         {
             GameStateManager.Instance.OnReset.AddListener(OnReset);
 
-            PlacePlatform(new(0, -10), Exit.Up, Station.Arieta);
-            PlacePlatform(new(2, 10), Exit.Down, Station.Sorena);
+            PlacePlatform(new(-2, -10), Exit.Up, Station.Arieta);
+            PlacePlatform(new(0, 10), Exit.Down, Station.Sorena);
             PlacePlatform(new(-15, 0), Exit.Right, Station.Esie);
+            PlacePlatform(new(6, -10), Exit.Up, Station.Läi);
         }
 
         public static string StationToName(Station station)
@@ -38,6 +39,7 @@ namespace LD59.Manager
                 Station.Arieta => "Ariëta",
                 Station.Sorena => "Sörena",
                 Station.Esie => "Ësie",
+                Station.Läi => "Laï",
                 _ => "Unnamed"
             };
         }
@@ -117,7 +119,8 @@ namespace LD59.Manager
     {
         Arieta,
         Sorena,
-        Esie
+        Esie,
+        Läi
     }
 
     public class Platform

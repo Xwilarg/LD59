@@ -3308,6 +3308,7 @@ MonoBehaviour:
   _stories:
   - {fileID: 11400000, guid: f869c37ad38b09548924fcc9138cc5e4, type: 2}
   - {fileID: 11400000, guid: e66926e7ae3589645ada8ff794363ce1, type: 2}
+  - {fileID: 11400000, guid: 672c052f1c6c65c468ad4f86991bf880, type: 2}
   _readyUp: {fileID: 1054047369}
   _junctionBtn: {fileID: 1745050690}
   _signalBtn: {fileID: 803317836}
