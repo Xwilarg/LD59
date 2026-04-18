@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -201,8 +200,7 @@ namespace LD59.Manager
                                     var signalGo = Instantiate(_signalHint);
                                     var signal = signalGo.GetComponent<Signal>();
                                     signal.SR.color = Color.white;
-                                    signal.SR.sortingLayerName = "Default";
-                                    signal.SR.sortingOrder = 1;
+                                    signal.SR.sortingLayerName = "Signal";
                                     tile.Signal = signal;
                                 }
                             }
@@ -250,7 +248,7 @@ namespace LD59.Manager
 
                         if (tile.CanOverrides && tile.Signal != null)
                         {
-                            Destroy(tile.Signal);
+                            Destroy(tile.Signal.gameObject);
                             tile.Signal = null;
                         }
                     }

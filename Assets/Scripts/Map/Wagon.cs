@@ -41,7 +41,23 @@ namespace LD59.Map
 
         private void Update()
         {
-            CurrTrainSpeed = Leader == null ? Mathf.Clamp(CurrTrainSpeed + Time.deltaTime * SpeedIncrease, 0f, TrainSpeed) : Leader.CurrTrainSpeed; // Front wagon lead others behind
+            if (Leader == null)
+            {
+
+                var speedIncr = 1f;
+                
+                if (GridManager.Instance.Has(TilePos))
+                {
+                    var rail = GridManager.Instance.Get(TilePos);
+                    if (rail.Signal != null && !rail.Signal.IsGreen) speedIncr = -1f; // Red light in front of us!
+                }
+                
+                CurrTrainSpeed = Mathf.Clamp(CurrTrainSpeed + Time.deltaTime * SpeedIncrease * speedIncr, 0f, TrainSpeed);
+            }
+            else // Front wagon lead others behind
+            {
+                CurrTrainSpeed = Leader.CurrTrainSpeed;
+            }
 
             _timer += Time.deltaTime * CurrTrainSpeed;
             if (_timer > 1f)
