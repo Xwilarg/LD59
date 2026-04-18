@@ -108,8 +108,13 @@ namespace LD59.Manager
 
             _tileHint.transform.rotation = Quaternion.Euler(0f, 0f, tile.Rotation);
             _tileSr.sprite = tile.Sprite;
-            _tileSr.color = allowOverrides ? new Color(1f, 1f, 1f, _tileSr.color.a) : new Color(1f, 0f, 0f, _tileSr.color.a); ;
+            _tileSr.color = (allowOverrides && !IsOutOfRange()) ? new Color(1f, 1f, 1f, _tileSr.color.a) : new Color(1f, 0f, 0f, _tileSr.color.a); ;
             _tileRail.Exits = tile.Exits;
+        }
+
+        private bool IsOutOfRange()
+        {
+            return _gridIndex.x <= -15 || _gridIndex.x >= 15 || _gridIndex.y <= -10 || _gridIndex.y >= 10;
         }
 
         public static bool IsClickOnUI()
@@ -140,7 +145,12 @@ namespace LD59.Manager
                 }
                 else if (_currentTool == Tool.Rail)
                 {
-                    if (GridManager.Instance.Has(_gridIndex))
+                    if (IsOutOfRange())
+                    {
+                        WarningManager.Instance.ShowWarning("This tile can't be modified");
+                        return;
+                    }
+                    else if (GridManager.Instance.Has(_gridIndex))
                     {
                         var elem = GridManager.Instance.Get(_gridIndex);
                         if (!elem.CanOverrides)
@@ -156,7 +166,7 @@ namespace LD59.Manager
 
                         if (!StoryManager.Instance.CanUseJunctions)
                         {
-                            WarningManager.Instance.ShowWarning("You can't build junctions yet, use the erased if you missplaced a rail");
+                            WarningManager.Instance.ShowWarning("You can't build junctions yet, use the eraser if you missplaced a rail");
                             return;
                         }
                         elem.Exits = _tileRail.Exits;
