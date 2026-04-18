@@ -41,6 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: SignalHint
+    uniqueID: 3668360103
+    locked: 0
   - name: Hint
     uniqueID: 1772865409
     locked: 0
