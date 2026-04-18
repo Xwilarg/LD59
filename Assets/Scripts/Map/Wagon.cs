@@ -1,5 +1,4 @@
 ﻿using LD59.Manager;
-using System.Threading;
 using UnityEngine;
 
 namespace LD59.Map
@@ -11,6 +10,8 @@ namespace LD59.Map
 
         public Vector2Int TilePos { set; get; }
         public Exit Direction { set; get; }
+
+        public Wagon Leader { set; get; }
 
         // Previous and next tile
         private Vector2Int _lastPos, _nextPos;
@@ -73,6 +74,11 @@ namespace LD59.Map
                             // Debug.Log($"Next exit it toward {Direction}");
                             _nextPos = TilePos + Rail.GetDirection(Direction);
                             CalculateBorders();
+
+                            if (Leader != null && !Leader.IsPosOnTrack(_nextPos))
+                            {
+                                Crash("Wagon got disconnected from its leading one");
+                            }
                         }
                     }
                     else
@@ -99,6 +105,11 @@ namespace LD59.Map
             */
             var rot = Mathf.Atan2(_endBorder.y - _startBorder.y, _endBorder.x - _startBorder.x) * Mathf.Rad2Deg + 90f;
             transform.rotation = Quaternion.Euler(0f, 0f, rot);
+        }
+
+        public bool IsPosOnTrack(Vector2Int pos)
+        {
+            return pos == _lastPos || pos == TilePos;
         }
 
         public void Crash(string reason)
