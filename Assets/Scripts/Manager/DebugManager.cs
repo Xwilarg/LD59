@@ -16,7 +16,7 @@ namespace LD59.Manager
 
         public void SpawnTrain()
         {
-
+            MapManager.Instance.SpawnTrain();
         }
     }
 }

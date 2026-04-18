@@ -1138,6 +1138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LD59.Manager.MapManager
   _railPrefab: {fileID: 6727168200951979094, guid: 01ea3043d741e8240a3c02a915dad51a, type: 3}
+  _trainPrefab: {fileID: 4796762676579367743, guid: 6aec6ddfa69f48040b24386900550d6f, type: 3}
 --- !u!114 &2061069992
 MonoBehaviour:
   m_ObjectHideFlags: 0

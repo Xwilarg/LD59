@@ -9,6 +9,7 @@ namespace LD59.Manager
         public static GridManager Instance { private set; get; }
 
         public static readonly int GridSize = 64;
+        public static readonly float GridWorld = .64f;
 
         private Dictionary<Vector2Int, Rail> _grid = new();
 
