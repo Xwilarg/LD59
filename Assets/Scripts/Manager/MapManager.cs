@@ -51,7 +51,7 @@ namespace LD59.Manager
                 var go = Instantiate(_railPrefab, (Vector2)(pos + (prolongation * i)) * GridManager.GridWorld, Quaternion.identity);
                 go.transform.rotation = Quaternion.Euler(0f, 0f, (usedExit == Exit.Left || usedExit == Exit.Right) ? 90f : 0f);
                 var rail = go.GetComponent<Rail>();
-                var rs = SpriteManager.Instance.GetPlatform();
+                var rs = (usedExit == Exit.Left || usedExit == Exit.Right) ? SpriteManager.Instance.GetHorizontalPlatform() : SpriteManager.Instance.GetVerticalPlatform();
                 rail.IsHint = false;
                 rail.SR.sprite = rs.Sprite;
                 rail.Exits = rs.Exits;

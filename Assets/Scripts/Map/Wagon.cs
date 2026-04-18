@@ -65,7 +65,7 @@ namespace LD59.Map
         {
             if (_isUnresponding)
             {
-                transform.position += (Vector3)_lastVelocity.normalized * Time.deltaTime; // TODO: Placeholder with deltatime since previous code wasn't working
+                //transform.position += (Vector3)_lastVelocity.normalized * Time.deltaTime; // TODO: Placeholder with deltatime since previous code wasn't working
                 return;
             }
 

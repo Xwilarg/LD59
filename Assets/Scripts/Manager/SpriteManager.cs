@@ -39,7 +39,8 @@ namespace LD59.Manager
 
         public RotatedSprite GetHorizontal() => new() { Sprite = _straight, Rotation = 90f, Exits = Exit.Left | Exit.Right };
         public RotatedSprite GetVertical() => new() { Sprite = _straight, Rotation = 0f, Exits = Exit.Up | Exit.Down };
-        public RotatedSprite GetPlatform() => new() { Sprite = _platform, Rotation = 0f, Exits = Exit.Up | Exit.Down };
+        public RotatedSprite GetHorizontalPlatform() => new() { Sprite = _platform, Rotation = 90f, Exits = Exit.Left | Exit.Right };
+        public RotatedSprite GetVerticalPlatform() => new() { Sprite = _platform, Rotation = 0f, Exits = Exit.Up | Exit.Down };
 
         public RotatedSprite GetTurnDownRight() => new() { Sprite = _turn, Rotation = 0f, Exits = Exit.Down | Exit.Right };
         public RotatedSprite GetTurnUpRight() => new() { Sprite = _turn, Rotation = 90f, Exits = Exit.Up | Exit.Right };
