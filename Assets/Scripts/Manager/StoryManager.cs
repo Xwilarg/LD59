@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using LD59.SO;
+using UnityEngine;
 
 namespace LD59.Manager
 {
@@ -6,22 +7,9 @@ namespace LD59.Manager
     {
         public static StoryManager Instance { private set; get; }
 
-
+        [SerializeField]
+        private StoryLevelInfo[] _stories;
         private int _storyIndex;
-        private StoryElement[] _stories = new[]
-        {
-            new StoryElement()
-            {
-                Trains = new StoryTrain[]
-                {
-                    new()
-                    {
-                        From = Station.Arieta,
-                        To = Station.Sorena
-                    }
-                }
-            }
-        };
 
         private void Awake()
         {
@@ -39,16 +27,5 @@ namespace LD59.Manager
             }
             _storyIndex++;
         }
-    }
-
-    public record StoryElement
-    {
-        public StoryTrain[] Trains;
-    }
-
-    public record StoryTrain
-    {
-        public Station From;
-        public Station To;
     }
 }

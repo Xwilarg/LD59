@@ -2428,6 +2428,7 @@ GameObject:
   - component: {fileID: 1751488084}
   - component: {fileID: 1751488086}
   - component: {fileID: 1751488085}
+  - component: {fileID: 1751488087}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -2558,6 +2559,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751488083}
   m_CullTransparentMesh: 1
+--- !u!114 &1751488087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751488083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0e1ed85edd29d14eab408b643d449fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LD59.VN.TextDisplay
 --- !u!1 &1906260060
 GameObject:
   m_ObjectHideFlags: 0
@@ -3021,6 +3034,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ccd95dd2290bf34ab60e908a9473855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LD59.Manager.StoryManager
+  _stories:
+  - {fileID: 11400000, guid: f869c37ad38b09548924fcc9138cc5e4, type: 2}
 --- !u!114 &2061069996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3033,7 +3048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71dedb7e61b576f4cac724a304875718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sketch.VN.VNManager
-  _display: {fileID: 0}
+  _display: {fileID: 1751488087}
   _characterImage: {fileID: 0}
   _container: {fileID: 1963481324}
   _namePanel: {fileID: 0}
