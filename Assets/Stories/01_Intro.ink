@@ -1,1 +1,5 @@
+Welcome! I'm Seläe, the representant from the WRTS assigned to this region! I'm sure together we are going to do great things!
+The region is not super developed right now but with a bit of effort I'm sure we will have enough funding to link all stations nearbye
+For now you only have access to the rails and eraser tool, try to link Ariëta and Sörena!
+Use left click to place rails and right click to turn them!
 -> END
