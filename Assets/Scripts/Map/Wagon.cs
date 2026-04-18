@@ -79,7 +79,7 @@ namespace LD59.Map
             var t2 = _timer + TrainWheelOffset;
 
             var p1 = t1 < .5f ? Vector2.LerpUnclamped(_startBorder, (Vector2)TilePos * GridManager.GridWorld, t1 * 2f) : Vector2.LerpUnclamped((Vector2)TilePos * GridManager.GridWorld, _endBorder, t1 * 2f - 1f);
-            var p2 = t2 < .5f ? Vector2.LerpUnclamped(_startBorder, (Vector2)TilePos * GridManager.GridWorld, t2 * 2f) : Vector2.LerpUnclamped((Vector2)TilePos * GridManager.GridWorld, _endBorder, t2 * 2f - 1f);
+            var p2 = t2 < .5f ? Vector2.LerpUnclamped(_endBorder, (Vector2)TilePos * GridManager.GridWorld, t2 * 2f) : Vector2.LerpUnclamped((Vector2)TilePos * GridManager.GridWorld, _endBorder, t2 * 2f - 1f);
 
             var rot = Mathf.Atan2(p2.y - p1.y, p2.x - p1.x) * Mathf.Rad2Deg + 90f;
             transform.rotation = Quaternion.Euler(0f, 0f, rot);
