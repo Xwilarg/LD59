@@ -1,8 +1,10 @@
 ﻿using LD59.Map;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -110,9 +112,27 @@ namespace LD59.Manager
             _tileRail.Exits = tile.Exits;
         }
 
+        private bool IsClickOnUI()
+        {
+            PointerEventData pointerEventData = new(EventSystem.current)
+            {
+                position = Mouse.current.position.ReadValue()
+            };
+            List<RaycastResult> raycastResultsList = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
+            for (int i = 0; i < raycastResultsList.Count; i++)
+            {
+                if (raycastResultsList[i].gameObject.TryGetComponent<Button>(out var _))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void OnPlace(InputAction.CallbackContext value)
         {
-            if (value.phase == InputActionPhase.Started)
+            if (value.phase == InputActionPhase.Started && !IsClickOnUI())
             {
                 if (_currentTool == Tool.Rail)
                 {
@@ -215,7 +235,7 @@ namespace LD59.Manager
 
         public void OnRotate(InputAction.CallbackContext value)
         {
-            if (value.phase == InputActionPhase.Started)
+            if (value.phase == InputActionPhase.Started && !IsClickOnUI())
             {
                 if (_currentTool == Tool.Rail)
                 {
