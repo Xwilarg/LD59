@@ -67,7 +67,7 @@ namespace Sketch.VN
         /// <param name="updateVariables">Method taking a VariablesState as parameter, allow to update the variables within the Ink file</param>
         /// <param name="onDone">Called once the story is done being read</param>
         /// <param name="onTags">Called upon an unknown tag is found, first parameter is the tag name and second is its value, function expect to return if the tag was treated or not</param>
-        public void ShowStory(TextAsset asset, Action<VariablesState> updateVariables = null, Action onDone = null, Func<string, string, bool> onTags = null)
+        public void ShowStory(TextAsset asset, Action<VariablesState> updateVariables = null, Action onDone = null)
         {
             _story = new(asset.text);
             updateVariables?.Invoke(_story.variablesState);

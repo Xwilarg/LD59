@@ -33,7 +33,7 @@ namespace LD59.VN
             private get => _toDisplay;
         }
 
-        public UnityEvent OnDisplayDone { set; get; }
+        public UnityEvent OnDisplayDone { set; get; } = new();
 
         private string _displayLeft = string.Empty;
 

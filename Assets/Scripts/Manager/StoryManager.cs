@@ -1,4 +1,5 @@
 ﻿using LD59.SO;
+using Sketch.VN;
 using UnityEngine;
 
 namespace LD59.Manager
@@ -11,9 +12,27 @@ namespace LD59.Manager
         private StoryLevelInfo[] _stories;
         private int _storyIndex;
 
+        [SerializeField]
+        private GameObject _readyUp;
+
         private void Awake()
         {
             Instance = this;
+
+            _readyUp.SetActive(false);
+        }
+
+        private void Start()
+        {
+            ShowNextStory();
+        }
+
+        public void ShowNextStory()
+        {
+            VNManager.Instance.ShowStory(_stories[_storyIndex].Intro, onDone: () =>
+            {
+                _readyUp.SetActive(true);
+            });
         }
 
         public void LaunchTrains()
@@ -26,6 +45,8 @@ namespace LD59.Manager
                 id++;
             }
             _storyIndex++;
+
+            _readyUp.SetActive(false);
         }
     }
 }
