@@ -1,6 +1,7 @@
 ﻿using LD59.Map;
 using System.Linq;
 using TMPro;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -194,6 +195,19 @@ namespace LD59.Manager
                     else
                     {
                         WarningManager.Instance.ShowWarning("A track must be placed before adding a signal");
+                    }
+                }
+                else if (_currentTool == Tool.Configure)
+                {
+                    if (GridManager.Instance.Has(_gridIndex))
+                    {
+                        var tile = GridManager.Instance.Get(_gridIndex);
+
+                        if (tile.Signal != null)
+                        {
+                            tile.Signal.IsGreen = !tile.Signal.IsGreen;
+                            tile.Signal.SR.sprite = tile.Signal.IsGreen ? SpriteManager.Instance.LightOn : SpriteManager.Instance.LightOff;
+                        }
                     }
                 }
             }

@@ -10,6 +10,11 @@ namespace LD59.Manager
         [SerializeField]
         private Sprite _straight, _turn, _crossing, _tCrossing, _platform;
 
+        [SerializeField]
+        private Sprite _lightOn, _lightOff;
+        public Sprite LightOn => _lightOn;
+        public Sprite LightOff => _lightOff;
+
         public RotatedSprite[] All { private set; get; }
 
         private void Awake()

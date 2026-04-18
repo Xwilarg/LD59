@@ -2698,6 +2698,8 @@ MonoBehaviour:
   _crossing: {fileID: 21300000, guid: b4523bf2f7fe4a945a88bb37f8ab5ec3, type: 3}
   _tCrossing: {fileID: 21300000, guid: 31b618af5e3b1b44e9ffce09b8c14e99, type: 3}
   _platform: {fileID: 21300000, guid: 6fc7c8e166c7b7441b24755c789b8f9a, type: 3}
+  _lightOn: {fileID: 21300000, guid: adc78b26391255544bd306fdcb85c8b4, type: 3}
+  _lightOff: {fileID: 21300000, guid: 25f005926ddea4549b08d0741a280afa, type: 3}
 --- !u!114 &2061069991
 MonoBehaviour:
   m_ObjectHideFlags: 0
