@@ -26,8 +26,8 @@ namespace LD59.Map
 
         private void Start()
         {
-            _lastPos = TilePos - GetDirection();
-            _nextPos = TilePos + GetDirection();
+            _lastPos = TilePos - Rail.GetDirection(Direction);
+            _nextPos = TilePos + Rail.GetDirection(Direction);
 
             CalculateBorders();
         }
@@ -65,7 +65,7 @@ namespace LD59.Map
 
                         Direction = tile.GetExit(Revert());
                         // Debug.Log($"Next exit it toward {Direction}");
-                        _nextPos = TilePos + GetDirection();
+                        _nextPos = TilePos + Rail.GetDirection(Direction);
                         CalculateBorders();
                     }
                     else
@@ -98,18 +98,6 @@ namespace LD59.Map
         {
             Debug.LogWarning($"Wragon crashed: {reason}");
             Destroy(gameObject);
-        }
-
-        public Vector2Int GetDirection()
-        {
-            return Direction switch
-            {
-                Exit.Up => Vector2Int.up,
-                Exit.Down => Vector2Int.down,
-                Exit.Left => Vector2Int.left,
-                Exit.Right => Vector2Int.right,
-                _ => throw new System.NotImplementedException($"Invalid exit {Direction}")
-            };
         }
 
         public Exit Revert()

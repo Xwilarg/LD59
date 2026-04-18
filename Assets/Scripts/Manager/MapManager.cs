@@ -34,6 +34,7 @@ namespace LD59.Manager
                 var go = Instantiate(_railPrefab, (Vector2)(pos + (prolongation * i)) * GridManager.GridWorld, Quaternion.identity);
                 var rail = go.GetComponent<Rail>();
                 var rs = SpriteManager.Instance.GetPlatform();
+                rail.IsHint = false;
                 rail.SR.sprite = rs.Sprite;
                 rail.Exits = rs.Exits;
                 rail.CanOverrides = false;

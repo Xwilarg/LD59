@@ -133,6 +133,7 @@ namespace LD59.Manager
                         var go = Instantiate(_tileHint);
                         var rail = go.GetComponent<Rail>();
                         GridManager.Instance.Register(_gridIndex, rail);
+                        rail.IsHint = false;
                         rail.SR.sortingLayerName = "Default";
                         rail.SR.color = Color.white;
                         rail.Exits = _tileRail.Exits;
@@ -168,14 +169,21 @@ namespace LD59.Manager
 
                         if (tile.CanOverrides)
                         {
-                            if (tile.Signal == null)
+                            if (tile.HaveManyExits())
                             {
-                                var signalGo = Instantiate(_signalHint);
-                                var signal = signalGo.GetComponent<Signal>();
-                                signal.SR.color = Color.white;
-                                signal.SR.sortingLayerName = "Default";
-                                signal.SR.sortingOrder = 1;
-                                tile.Signal = signal;
+                                WarningManager.Instance.ShowWarning("Signals can't be placed on a junction");
+                            }
+                            else
+                            {
+                                if (tile.Signal == null)
+                                {
+                                    var signalGo = Instantiate(_signalHint);
+                                    var signal = signalGo.GetComponent<Signal>();
+                                    signal.SR.color = Color.white;
+                                    signal.SR.sortingLayerName = "Default";
+                                    signal.SR.sortingOrder = 1;
+                                    tile.Signal = signal;
+                                }
                             }
                         }
                         else
