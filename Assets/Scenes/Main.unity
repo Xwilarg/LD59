@@ -119,6 +119,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &354679993
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 354679995}
+  - component: {fileID: 354679994}
+  m_Layer: 0
+  m_Name: Grid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!156049354 &354679994
+Grid:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354679993}
+  m_Enabled: 1
+  m_CellSize: {x: 0.64, y: 0.64, z: 0}
+  m_CellGap: {x: 0, y: 0, z: 0}
+  m_CellLayout: 0
+  m_CellSwizzle: 0
+--- !u!4 &354679995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354679993}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,6 +535,7 @@ GameObject:
   - component: {fileID: 2061069988}
   - component: {fileID: 2061069989}
   - component: {fileID: 2061069990}
+  - component: {fileID: 2061069991}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -555,6 +600,20 @@ MonoBehaviour:
   _turn: {fileID: 21300000, guid: 6e78d74b2502825419a69ab98446c301, type: 3}
   _crossing: {fileID: 21300000, guid: b4523bf2f7fe4a945a88bb37f8ab5ec3, type: 3}
   _tCrossing: {fileID: 21300000, guid: 31b618af5e3b1b44e9ffce09b8c14e99, type: 3}
+  _platform: {fileID: 21300000, guid: 6fc7c8e166c7b7441b24755c789b8f9a, type: 3}
+--- !u!114 &2061069991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061069986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe405e13ff95ed42aaae97b5c24a7c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LD59.Manager.MapManager
+  _railPrefab: {fileID: 6727168200951979094, guid: 01ea3043d741e8240a3c02a915dad51a, type: 3}
 --- !u!1001 &3770466519328585138
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -608,6 +667,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 87a60b6d38f4d2a499e5b5bbf30184da, type: 3}
     - target: {fileID: 2605890954739875259, guid: 01ea3043d741e8240a3c02a915dad51a, type: 3}
+      propertyPath: m_Color.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 2605890954739875259, guid: 01ea3043d741e8240a3c02a915dad51a, type: 3}
       propertyPath: m_SortingLayer
       value: 1
       objectReference: {fileID: 0}
@@ -632,3 +695,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 2061069987}
   - {fileID: 3770466519328585138}
+  - {fileID: 354679995}

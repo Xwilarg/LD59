@@ -17,7 +17,13 @@ namespace LD59.Manager
             Instance = this;
         }
 
+        public void Register(Vector2Int pos, Rail rail)
+            => _grid.Add(pos, rail);
+
         public bool Has(Vector2Int pos)
             => _grid.ContainsKey(pos);
+
+        public Rail Get(Vector2Int pos)
+            => _grid[pos];
     }
 }

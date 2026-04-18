@@ -4,16 +4,25 @@ namespace LD59.Map
 {
     public class Rail : MonoBehaviour
     {
-        private SpriteRenderer _sr;
+        public Exit Exits { set; get; }
+        public bool CanOverrides { set; get; } = true;
+
+        public SpriteRenderer SR { private set; get; }
 
         private void Awake()
         {
-            _sr = GetComponent<SpriteRenderer>();
+            SR = GetComponent<SpriteRenderer>();
         }
     }
 
+    [System.Flags]
     public enum Exit
     {
-        Up, Down, Left, Right
+        None = 0,
+
+        Up = 1,
+        Down = 2,
+        Left = 4,
+        Right = 8
     }
 }
