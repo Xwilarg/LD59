@@ -13,7 +13,6 @@ namespace LD59.VN
 
         private int _index;
 
-
         private const float _displaySpeedRef = .02f;
 
         private string _toDisplay = string.Empty;
@@ -34,7 +33,7 @@ namespace LD59.VN
             private get => _toDisplay;
         }
 
-        public UnityEvent OnDisplayDone;
+        public UnityEvent OnDisplayDone { set; get; }
 
         private string _displayLeft = string.Empty;
 
