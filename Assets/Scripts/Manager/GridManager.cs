@@ -22,6 +22,9 @@ namespace LD59.Manager
         public void Register(Vector2Int pos, Rail rail)
             => _grid.Add(pos, rail);
 
+        public void Delete(Vector2Int pos)
+            => _grid.Remove(pos);
+
         public bool Has(Vector2Int pos)
             => _grid.ContainsKey(pos);
 

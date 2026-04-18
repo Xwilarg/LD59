@@ -1,7 +1,9 @@
 ﻿using LD59.Map;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace LD59.Manager
 {
@@ -12,6 +14,18 @@ namespace LD59.Manager
         private SpriteRenderer _tileSr;
         private Rail _tileRail;
 
+        [SerializeField]
+        private GameObject _deleteHighlight;
+
+        private Transform[] _hints;
+
+        [SerializeField]
+        private TMP_Text _toolDescription;
+
+        [SerializeField]
+        private GameObject _toolbar;
+        private Button[] _toolButtons;
+
         private int _currIndex;
 
         private Camera _cam;
@@ -20,12 +34,18 @@ namespace LD59.Manager
 
         private RotatedSprite[] _sprites;
 
+        private Tool _currentTool;
+
         private void Awake()
         {
             _cam = Camera.main;
+            _hints = new[] { _tileHint.transform, _deleteHighlight.transform };
 
             _tileSr = _tileHint.GetComponent<SpriteRenderer>();
             _tileRail = _tileHint.GetComponent<Rail>();
+
+            _toolButtons = _toolbar.GetComponentsInChildren<Button>();
+            _toolButtons[0].onClick.Invoke();
         }
 
         private void Start()
@@ -55,7 +75,8 @@ namespace LD59.Manager
             {
                 _gridIndex = newIndex;
                 var gridPos = newIndex * GridManager.GridSize;
-                _tileHint.transform.position = (Vector2)gridPos / 100f;
+
+                foreach (var t in _hints) t.position = (Vector2)gridPos / 100f;
 
                 UpdateSprite();
             }
@@ -92,26 +113,46 @@ namespace LD59.Manager
         {
             if (value.phase == InputActionPhase.Started)
             {
-                if (GridManager.Instance.Has(_gridIndex))
+                if (_currentTool == Tool.Rail)
                 {
-                    var elem = GridManager.Instance.Get(_gridIndex);
-                    elem.Exits = _tileRail.Exits;
-                    elem.transform.rotation = Quaternion.Euler(0f, 0f, _tileRail.transform.rotation.eulerAngles.z);
-                    elem.SR.sprite = _tileRail.SR.sprite;
-                    Debug.Log($"[PLAC] Placed tile with exists {elem.Exits}");
-                }
-                else
-                {
-                    var go = Instantiate(_tileHint);
-                    var rail = go.GetComponent<Rail>();
-                    GridManager.Instance.Register(_gridIndex, rail);
-                    rail.SR.sortingLayerName = "Default";
-                    rail.SR.color = Color.white;
-                    rail.Exits = _tileRail.Exits;
-                    Debug.Log($"[PLAC] Placed tile with exists {rail.Exits}");
-                }
+                    if (GridManager.Instance.Has(_gridIndex))
+                    {
+                        var elem = GridManager.Instance.Get(_gridIndex);
+                        elem.Exits = _tileRail.Exits;
+                        elem.transform.rotation = Quaternion.Euler(0f, 0f, _tileRail.transform.rotation.eulerAngles.z);
+                        elem.SR.sprite = _tileRail.SR.sprite;
+                        Debug.Log($"[PLAC] Placed tile with exists {elem.Exits}");
+                    }
+                    else
+                    {
+                        var go = Instantiate(_tileHint);
+                        var rail = go.GetComponent<Rail>();
+                        GridManager.Instance.Register(_gridIndex, rail);
+                        rail.SR.sortingLayerName = "Default";
+                        rail.SR.color = Color.white;
+                        rail.Exits = _tileRail.Exits;
+                        Debug.Log($"[PLAC] Placed tile with exists {rail.Exits}");
+                    }
 
-                UpdateSprite();
+                    UpdateSprite();
+                }
+                else if (_currentTool == Tool.Eraser)
+                {
+                    if (GridManager.Instance.Has(_gridIndex))
+                    {
+                        var tile = GridManager.Instance.Get(_gridIndex);
+
+                        if (tile.CanOverrides)
+                        {
+                            Destroy(tile.gameObject);
+                            GridManager.Instance.Delete(_gridIndex);
+                        }
+                        else
+                        {
+                            WarningManager.Instance.ShowWarning("Can't delete a train station");
+                        }
+                    }
+                }
             }
         }
 
@@ -119,9 +160,53 @@ namespace LD59.Manager
         {
             if (value.phase == InputActionPhase.Started)
             {
-                _currIndex = (_currIndex + 1) % _sprites.Length;
-                UpdateSprite();
+                if (_currentTool == Tool.Rail)
+                {
+                    _currIndex = (_currIndex + 1) % _sprites.Length;
+                    UpdateSprite();
+                }
+                else if (_currentTool == Tool.Eraser)
+                {
+
+                }
             }
         }
+
+        public void SelectRailTool()
+        {
+            _toolDescription.text = "<b>Rails tool<b>\nLeft click: Place rail\nRight click: Rotate rail";
+            foreach (var t in _hints) t.gameObject.SetActive(false);
+            _tileHint.gameObject.SetActive(true);
+
+            _currentTool = Tool.Rail;
+        }
+
+        public void SelectErasedTool()
+        {
+            _toolDescription.text = "<b>Eraser tool<b>\nLeft click: Delete rail\nRight click: Delete signal";
+            foreach (var t in _hints) t.gameObject.SetActive(false);
+            _deleteHighlight.SetActive(true);
+
+            _currentTool = Tool.Eraser;
+        }
+
+        public void SelectSignalTool()
+        {
+            _toolDescription.text = "<b>Signal tool<b>\nLeft click: Place signal";
+            foreach (var t in _hints) t.gameObject.SetActive(false);
+
+            _currentTool = Tool.Signal;
+        }
+
+        public void OnPress1(InputAction.CallbackContext value) { if (value.phase == InputActionPhase.Started && _toolButtons[0].interactable) _toolButtons[0].onClick.Invoke(); }
+        public void OnPress2(InputAction.CallbackContext value) { if (value.phase == InputActionPhase.Started && _toolButtons[1].interactable) _toolButtons[1].onClick.Invoke(); }
+        public void OnPress3(InputAction.CallbackContext value) { if (value.phase == InputActionPhase.Started && _toolButtons[2].interactable) _toolButtons[2].onClick.Invoke(); }
+    }
+
+    public enum Tool
+    {
+        Rail,
+        Signal,
+        Eraser
     }
 }
