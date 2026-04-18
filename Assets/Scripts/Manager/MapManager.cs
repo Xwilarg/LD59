@@ -22,11 +22,21 @@ namespace LD59.Manager
 
         private void Start()
         {
-            PlacePlatform(new(0, -7), Exit.Up, Vector2Int.down);
-            PlacePlatform(new(2, 7), Exit.Down, Vector2Int.up);
+            PlacePlatform(new(0, -7), Exit.Up, Vector2Int.down, Station.Arieta);
+            PlacePlatform(new(2, 7), Exit.Down, Vector2Int.up, Station.Sorena);
         }
 
-        private void PlacePlatform(Vector2Int pos, Exit usedExit, Vector2Int prolongation)
+        private string StationToName(Station station)
+        {
+            return station switch
+            {
+                Station.Arieta => "Ariëta",
+                Station.Sorena => "Sörena",
+                _ => "Unnamed"
+            };
+        }
+
+        private void PlacePlatform(Vector2Int pos, Exit usedExit, Vector2Int prolongation, Station station)
         {
             var platform = new Platform() { PositionStart = pos, PositionEnd = pos + (prolongation * PlatformLength), Prolongation = prolongation, Exit = usedExit };
             for (int i = 0; i < PlatformLength; i++)
@@ -40,12 +50,16 @@ namespace LD59.Manager
                 rail.CanOverrides = false;
                 GridManager.Instance.Register(pos + (prolongation * i), rail);
 
-                if (i == 0) _platforms.Add(platform);
+                if (i == 0)
+                {
+                    _platforms.Add(platform);
+                    rail.SetLabel(StationToName(station));
+                }
                 else if (i == PlatformLength - 1) rail.Platform = platform;
             }
         }
 
-        public void SpawnTrain()
+        public void SpawnTrain(Station from, Station to, string label)
         {
             var platform = _platforms[0];//[Random.Range(0, _platforms.Count)];
             Wagon lastWagon = null;
@@ -57,6 +71,11 @@ namespace LD59.Manager
                 wagon.TilePos = platform.PositionStart + (platform.Prolongation * i);
                 wagon.Direction = platform.Exit;
 
+                if (i == 0)
+                {
+                    wagon.SetLabel(label);
+                }
+
                 if (lastWagon != null)
                 {
                     wagon.Leader = lastWagon;
@@ -65,6 +84,12 @@ namespace LD59.Manager
                 lastWagon = wagon;
             }
         }
+    }
+
+    public enum Station
+    {
+        Arieta,
+        Sorena
     }
 
     public class Platform

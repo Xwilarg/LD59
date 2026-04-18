@@ -1,6 +1,7 @@
 ﻿using LD59.Manager;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -10,6 +11,9 @@ namespace LD59.Map
     {
         [SerializeField]
         private LineRenderer _lineHint;
+
+        [SerializeField]
+        private TMP_Text _label;
 
         private readonly List<ExitPair> _allPaths = new();
         private int _pathIndex;
@@ -37,6 +41,13 @@ namespace LD59.Map
         private void Awake()
         {
             SR = GetComponent<SpriteRenderer>();
+            _label.gameObject.SetActive(false);
+        }
+
+        public void SetLabel(string text)
+        {
+            _label.gameObject.SetActive(true);
+            _label.text = text;
         }
 
         public void UpdatePathIndex()

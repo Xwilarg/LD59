@@ -1,4 +1,5 @@
 ﻿using LD59.Manager;
+using TMPro;
 using UnityEngine;
 
 namespace LD59.Map
@@ -6,7 +7,10 @@ namespace LD59.Map
     public class Wagon : MonoBehaviour
     {
         [SerializeField]
-        public Transform _forward, _backward;
+        private Transform _forward, _backward;
+
+        [SerializeField]
+        private TMP_Text _label;
 
         public Vector2Int TilePos { set; get; }
         public Exit Direction { set; get; }
@@ -26,12 +30,23 @@ namespace LD59.Map
 
         public float CurrTrainSpeed { private set; get; }
 
+        private void Awake()
+        {
+            _label.gameObject.SetActive(false);
+        }
+
         private void Start()
         {
             _lastPos = TilePos - Rail.GetDirection(Direction);
             _nextPos = TilePos + Rail.GetDirection(Direction);
 
             CalculateBorders();
+        }
+
+        public void SetLabel(string text)
+        {
+            _label.gameObject.SetActive(true);
+            _label.text = text;
         }
 
         private void CalculateBorders()
@@ -110,6 +125,7 @@ namespace LD59.Map
             }
 
             transform.position = Vector2.Lerp(_startBorder, _endBorder, _timer);
+            _label.transform.position = Vector2.LerpUnclamped(_startBorder, _endBorder, _timer + .85f);
 
             /*
             var t1 = _timer - TrainWheelOffset;

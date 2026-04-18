@@ -886,7 +886,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 0000000081c7ab69ffaf7794a7bba6da
+  m_ApplyToSortingLayers: 0000000081c7ab69ffaf7794a7bba6daafe4a411
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -2629,6 +2629,7 @@ GameObject:
   - component: {fileID: 2061069992}
   - component: {fileID: 2061069993}
   - component: {fileID: 2061069994}
+  - component: {fileID: 2061069995}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2753,6 +2754,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e9dce14a489d864fb3714bc49b130dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LD59.Manager.GameStateManager
+--- !u!114 &2061069995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061069986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ccd95dd2290bf34ab60e908a9473855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LD59.Manager.StoryManager
 --- !u!1 &2097548581
 GameObject:
   m_ObjectHideFlags: 0
@@ -3218,7 +3231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2605890954739875259, guid: 01ea3043d741e8240a3c02a915dad51a, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2605890954739875259, guid: 01ea3043d741e8240a3c02a915dad51a, type: 3}
       propertyPath: m_SortingLayerID
