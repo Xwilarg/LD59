@@ -1,0 +1,32 @@
+﻿using Unity.VisualScripting;
+using UnityEngine;
+
+namespace LD59.Manager
+{
+    public class SpriteManager : MonoBehaviour
+    {
+        public static SpriteManager Instance { private set; get; }
+
+        [SerializeField]
+        private Sprite _straight, _turn, _crossing;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        public RotatedSprite GetHorizontal() => new() { Sprite = _straight, Rotation = 90f };
+        public RotatedSprite GetVertical() => new() { Sprite = _straight, Rotation = 0f };
+        public RotatedSprite GetTurnDownRight() => new() { Sprite = _turn, Rotation = 0f };
+        public RotatedSprite GetTurnUpRight() => new() { Sprite = _turn, Rotation = 90f };
+        public RotatedSprite GetTurnUpLeft() => new() { Sprite = _turn, Rotation = 180f };
+        public RotatedSprite GetTurnDownLeft() => new() { Sprite = _turn, Rotation = 270f };
+        public RotatedSprite GetCrossing() => new() { Sprite = _crossing, Rotation = 0f };
+    }
+
+    public record RotatedSprite
+    {
+        public Sprite Sprite;
+        public float Rotation;
+    }
+}
