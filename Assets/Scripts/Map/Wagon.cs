@@ -11,10 +11,10 @@ namespace LD59.Map
         public Vector2Int TilePos { set; get; }
         public Exit Direction { set; get; }
 
-        private Vector2Int _lastPos;
-        private Vector2Int _nextPos;
-
-        private Vector2 _startPos, _endPos;
+        // Previous and next tile
+        private Vector2Int _lastPos, _nextPos;
+        // Pos used to calculate train rotation
+        private Vector2 _startBorder, _endBorder;
 
         private float _timer = .5f;
 
@@ -22,6 +22,14 @@ namespace LD59.Map
         {
             _lastPos = TilePos - GetDirection();
             _nextPos = TilePos + GetDirection();
+
+            CalculateBorders();
+        }
+
+        private void CalculateBorders()
+        {
+            _startBorder = (Vector2)(_lastPos + TilePos) / 2f * GridManager.GridWorld;
+            _endBorder = (Vector2)(_nextPos + TilePos) / 2f * GridManager.GridWorld;
         }
 
         private void Update()
@@ -43,6 +51,7 @@ namespace LD59.Map
                         Direction = tile.GetExit(Revert());
                         // Debug.Log($"Next exit it toward {Direction}");
                         _nextPos = TilePos + GetDirection();
+                        CalculateBorders();
                     }
                     else
                     {
@@ -55,11 +64,9 @@ namespace LD59.Map
                 }
             }
 
-            _startPos = ((Vector2)(TilePos + _lastPos) / 2f) * GridManager.GridWorld;
-            _endPos = ((Vector2)(TilePos + _nextPos) / 2f) * GridManager.GridWorld;
-            transform.position = Vector2.Lerp(_startPos, _endPos, _timer);
+            transform.position = Vector2.Lerp(_startBorder, _endBorder, _timer);
 
-            var rot = Mathf.Atan2(_endPos.y - _startPos.y, _endPos.x - _startPos.x) * Mathf.Rad2Deg + 90f;
+            var rot = Mathf.Atan2(_endBorder.y - _startBorder.y, _endBorder.x - _startBorder.x) * Mathf.Rad2Deg + 90f;
             transform.rotation = Quaternion.Euler(0f, 0f, rot);
         }
 
@@ -96,7 +103,7 @@ namespace LD59.Map
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawLine((Vector2)_lastPos * GridManager.GridWorld, (Vector2)_nextPos * GridManager.GridWorld);
+            Gizmos.DrawLine(_startBorder, _endBorder);
 
             Gizmos.color = Color.red;
             Gizmos.DrawLine(_forward.position, _backward.position);
