@@ -47,7 +47,7 @@ namespace LD59.Manager
 
         public void SpawnTrain()
         {
-            var platform = _platforms[Random.Range(0, _platforms.Count)];
+            var platform = _platforms[0];//[Random.Range(0, _platforms.Count)];
             Wagon lastWagon = null;
 
             for (int i = 0; i < PlatformLength; i++)

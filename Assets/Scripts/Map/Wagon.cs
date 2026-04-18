@@ -23,7 +23,7 @@ namespace LD59.Map
         private const float TrainSpeed = 2f;
         private const float SpeedIncrease = 4f;
 
-        private float _currTrainSpeed;
+        public float CurrTrainSpeed { private set; get; }
 
         private void Start()
         {
@@ -41,9 +41,9 @@ namespace LD59.Map
 
         private void Update()
         {
-            _currTrainSpeed = Mathf.Clamp(_currTrainSpeed + Time.deltaTime * SpeedIncrease, 0f, TrainSpeed);
+            CurrTrainSpeed = Leader == null ? Mathf.Clamp(CurrTrainSpeed + Time.deltaTime * SpeedIncrease, 0f, TrainSpeed) : Leader.CurrTrainSpeed; // Front wagon lead others behind
 
-            _timer += Time.deltaTime * _currTrainSpeed;
+            _timer += Time.deltaTime * CurrTrainSpeed;
             if (_timer > 1f)
             {
                 _timer -= 1f;
@@ -114,7 +114,7 @@ namespace LD59.Map
 
         public void Crash(string reason)
         {
-            Debug.LogWarning($"Wragon crashed: {reason}");
+            GameStateManager.Instance.Loose(reason);
             Destroy(gameObject);
         }
 

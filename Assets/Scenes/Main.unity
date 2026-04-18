@@ -1130,7 +1130,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1772865409
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -3584133226195451638, guid: 1574224f7a9d3f24f9aebb6fbe7946d2, type: 3}
@@ -1827,7 +1827,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1772865409
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 943e7fb07523ce242beb324fde8421b6, type: 3}
@@ -2628,6 +2628,7 @@ GameObject:
   - component: {fileID: 2061069991}
   - component: {fileID: 2061069992}
   - component: {fileID: 2061069993}
+  - component: {fileID: 2061069994}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2740,6 +2741,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LD59.Manager.WarningManager
   _warning: {fileID: 2117339109}
+--- !u!114 &2061069994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061069986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9dce14a489d864fb3714bc49b130dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LD59.Manager.GameStateManager
 --- !u!1 &2097548581
 GameObject:
   m_ObjectHideFlags: 0
