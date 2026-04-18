@@ -12,6 +12,7 @@ namespace LD59.Map
         public Exit Direction { set; get; }
 
         public Wagon Leader { set; get; }
+        public Wagon Follower { set; get; }
 
         // Previous and next tile
         private Vector2Int _lastPos, _nextPos;
@@ -75,7 +76,7 @@ namespace LD59.Map
                     {
                         if (tile.Platform != null)
                         {
-                            Destroy(gameObject);
+                            DestroyTrain();
                             return;
                         }
 
@@ -131,6 +132,13 @@ namespace LD59.Map
         public void Crash(string reason)
         {
             GameStateManager.Instance.Loose(reason);
+            DestroyTrain();
+        }
+
+        public void DestroyTrain()
+        {
+            if (Follower != null) Follower.DestroyTrain();
+
             Destroy(gameObject);
         }
 

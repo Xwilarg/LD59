@@ -57,7 +57,11 @@ namespace LD59.Manager
                 wagon.TilePos = platform.PositionStart + (platform.Prolongation * i);
                 wagon.Direction = platform.Exit;
 
-                if (lastWagon != null) wagon.Leader = lastWagon;
+                if (lastWagon != null)
+                {
+                    wagon.Leader = lastWagon;
+                    lastWagon.Follower = wagon;
+                }
                 lastWagon = wagon;
             }
         }
