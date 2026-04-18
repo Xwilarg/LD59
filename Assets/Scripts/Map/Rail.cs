@@ -13,6 +13,14 @@ namespace LD59.Map
         {
             SR = GetComponent<SpriteRenderer>();
         }
+
+        public Exit GetExit(Exit source)
+        {
+            if (source != Exit.Up && Exits.HasFlag(Exit.Up)) return Exit.Up;
+            if (source != Exit.Down && Exits.HasFlag(Exit.Down)) return Exit.Down;
+            if (source != Exit.Left && Exits.HasFlag(Exit.Left)) return Exit.Left;
+            return Exit.Right;
+        }
     }
 
     [System.Flags]

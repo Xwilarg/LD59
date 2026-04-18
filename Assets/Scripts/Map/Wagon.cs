@@ -1,4 +1,5 @@
 ﻿using LD59.Manager;
+using Mono.Cecil.Cil;
 using UnityEngine;
 
 namespace LD59.Map
@@ -26,20 +27,43 @@ namespace LD59.Map
 
         private void Update()
         {
-            _timer += Time.deltaTime * .1f;
+            _timer += Time.deltaTime * 1f;
             if (_timer > 1f)
             {
                 _timer -= 1f;
                 _lastPos = TilePos;
                 TilePos = _nextPos;
                 _nextPos = TilePos + GetDirection();
-                Debug.Log("NEXT TILE");
+                Debug.Log($"Railed passed, current at {TilePos} going to {_nextPos} (opposite exit is {Revert()})");
+
+                if (GridManager.Instance.Has(_nextPos))
+                {
+                    var tile = GridManager.Instance.Get(_nextPos);
+                    if (tile.Exits.HasFlag(Revert()))
+                    {
+                        Direction = tile.GetExit(Revert());
+                        Debug.Log($"Next exit it toward {Direction}");
+                    }
+                    else
+                    {
+                        Crash("Train reached missplaced track");
+                    }
+                }
+                else
+                {
+                    Crash("Train reached the end of the line");
+                }
             }
 
             _startPos = ((Vector2)(TilePos + _lastPos) / 2f) * GridManager.GridWorld;
             _endPos = ((Vector2)(TilePos + _nextPos) / 2f) * GridManager.GridWorld;
-            Debug.Log($"{_startPos} to {_endPos} for timer {_timer}");
             transform.position = Vector2.Lerp(_startPos, _endPos, _timer);
+        }
+
+        public void Crash(string reason)
+        {
+            Debug.LogWarning($"Wragon crashed: {reason}");
+            Destroy(gameObject);
         }
 
         public Vector2Int GetDirection()
@@ -50,6 +74,18 @@ namespace LD59.Map
                 Exit.Down => Vector2Int.down,
                 Exit.Left => Vector2Int.left,
                 Exit.Right => Vector2Int.right,
+                _ => throw new System.NotImplementedException($"Invalid exit {Direction}")
+            };
+        }
+
+        public Exit Revert()
+        {
+            return Direction switch
+            {
+                Exit.Up => Exit.Down,
+                Exit.Down => Exit.Up,
+                Exit.Left => Exit.Right,
+                Exit.Right => Exit.Left,
                 _ => throw new System.NotImplementedException($"Invalid exit {Direction}")
             };
         }
