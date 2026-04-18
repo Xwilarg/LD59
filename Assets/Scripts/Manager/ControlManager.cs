@@ -15,7 +15,7 @@ namespace LD59.Manager
         private Rail _tileRail;
 
         [SerializeField]
-        private GameObject _deleteHighlight;
+        private GameObject _deleteHighlight, _configureHighlight;
 
         [SerializeField]
         private GameObject _signalHint;
@@ -42,7 +42,7 @@ namespace LD59.Manager
         private void Awake()
         {
             _cam = Camera.main;
-            _hints = new[] { _tileHint.transform, _deleteHighlight.transform, _signalHint.transform };
+            _hints = new[] { _tileHint.transform, _deleteHighlight.transform, _signalHint.transform, _configureHighlight.transform };
 
             _tileSr = _tileHint.GetComponent<SpriteRenderer>();
             _tileRail = _tileHint.GetComponent<Rail>();
@@ -255,15 +255,26 @@ namespace LD59.Manager
             _currentTool = Tool.Signal;
         }
 
+        public void SelectConfigureTool()
+        {
+            _toolDescription.text = "<b>Configure tool<b>\nLeft click: Switch signal\nRight click: Switch junction";
+            foreach (var t in _hints) t.gameObject.SetActive(false);
+            _configureHighlight.SetActive(true);
+
+            _currentTool = Tool.Configure;
+        }
+
         public void OnPress1(InputAction.CallbackContext value) { if (value.phase == InputActionPhase.Started && _toolButtons[0].interactable) _toolButtons[0].onClick.Invoke(); }
         public void OnPress2(InputAction.CallbackContext value) { if (value.phase == InputActionPhase.Started && _toolButtons[1].interactable) _toolButtons[1].onClick.Invoke(); }
         public void OnPress3(InputAction.CallbackContext value) { if (value.phase == InputActionPhase.Started && _toolButtons[2].interactable) _toolButtons[2].onClick.Invoke(); }
+        public void OnPress4(InputAction.CallbackContext value) { if (value.phase == InputActionPhase.Started && _toolButtons[3].interactable) _toolButtons[3].onClick.Invoke(); }
     }
 
     public enum Tool
     {
         Rail,
         Signal,
-        Eraser
+        Eraser,
+        Configure
     }
 }
