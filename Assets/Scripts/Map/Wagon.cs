@@ -1,4 +1,5 @@
 ﻿using LD59.Manager;
+using System.Threading;
 using UnityEngine;
 
 namespace LD59.Map
@@ -19,6 +20,9 @@ namespace LD59.Map
         private float _timer = .5f;
         private const float TrainWheelOffset = .45f;
         private const float TrainSpeed = 2f;
+        private const float SpeedIncrease = 4f;
+
+        private float _currTrainSpeed;
 
         private void Start()
         {
@@ -36,7 +40,9 @@ namespace LD59.Map
 
         private void Update()
         {
-            _timer += Time.deltaTime * TrainSpeed;
+            _currTrainSpeed = Mathf.Clamp(_currTrainSpeed + Time.deltaTime * SpeedIncrease, 0f, TrainSpeed);
+
+            _timer += Time.deltaTime * _currTrainSpeed;
             if (_timer > 1f)
             {
                 _timer -= 1f;

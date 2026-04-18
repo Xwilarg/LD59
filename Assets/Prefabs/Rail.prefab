@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2605890954739875259}
   - component: {fileID: 4517898537650457356}
   m_Layer: 0
-  m_Name: HintPrefab
+  m_Name: Rail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

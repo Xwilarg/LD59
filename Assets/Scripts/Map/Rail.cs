@@ -9,6 +9,8 @@ namespace LD59.Map
         public bool CanOverrides { set; get; } = true;
         public Platform Platform { set; get; }
 
+        public Signal Signal { set; get; }
+
         public SpriteRenderer SR { private set; get; }
 
         private void Awake()

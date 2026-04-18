@@ -17,6 +17,9 @@ namespace LD59.Manager
         [SerializeField]
         private GameObject _deleteHighlight;
 
+        [SerializeField]
+        private GameObject _signalHint;
+
         private Transform[] _hints;
 
         [SerializeField]
@@ -39,7 +42,7 @@ namespace LD59.Manager
         private void Awake()
         {
             _cam = Camera.main;
-            _hints = new[] { _tileHint.transform, _deleteHighlight.transform };
+            _hints = new[] { _tileHint.transform, _deleteHighlight.transform, _signalHint.transform };
 
             _tileSr = _tileHint.GetComponent<SpriteRenderer>();
             _tileRail = _tileHint.GetComponent<Rail>();
@@ -85,15 +88,12 @@ namespace LD59.Manager
         private void UpdateSprite()
         {
             var tile = _sprites[_currIndex];
+            bool allowOverrides = true;
 
             if (GridManager.Instance.Has(_gridIndex))
             {
                 var tExisting = GridManager.Instance.Get(_gridIndex);
-                if (!tExisting.CanOverrides)
-                {
-                    _tileSr.color = new Color(1f, 0f, 0f, _tileSr.color.a);
-                    return;
-                }
+                allowOverrides = tExisting.CanOverrides;
                 var existing = tExisting.Exits;
                 var exits = tile.Exits | existing;
 
@@ -105,7 +105,7 @@ namespace LD59.Manager
 
             _tileHint.transform.rotation = Quaternion.Euler(0f, 0f, tile.Rotation);
             _tileSr.sprite = tile.Sprite;
-            _tileSr.color = new Color(1f, 1f, 1f, _tileSr.color.a);
+            _tileSr.color = allowOverrides ? new Color(1f, 1f, 1f, _tileSr.color.a) : new Color(1f, 0f, 0f, _tileSr.color.a); ;
             _tileRail.Exits = tile.Exits;
         }
 
@@ -118,6 +118,11 @@ namespace LD59.Manager
                     if (GridManager.Instance.Has(_gridIndex))
                     {
                         var elem = GridManager.Instance.Get(_gridIndex);
+                        if (!elem.CanOverrides)
+                        {
+                            WarningManager.Instance.ShowWarning("This tile can't be modified");
+                            return;
+                        }
                         elem.Exits = _tileRail.Exits;
                         elem.transform.rotation = Quaternion.Euler(0f, 0f, _tileRail.transform.rotation.eulerAngles.z);
                         elem.SR.sprite = _tileRail.SR.sprite;
@@ -133,8 +138,6 @@ namespace LD59.Manager
                         rail.Exits = _tileRail.Exits;
                         Debug.Log($"[PLAC] Placed tile with exists {rail.Exits}");
                     }
-
-                    UpdateSprite();
                 }
                 else if (_currentTool == Tool.Eraser)
                 {
@@ -144,13 +147,45 @@ namespace LD59.Manager
 
                         if (tile.CanOverrides)
                         {
+                            if (tile.Signal != null)
+                            {
+                                Destroy(tile.Signal.gameObject);
+                            }
                             Destroy(tile.gameObject);
                             GridManager.Instance.Delete(_gridIndex);
                         }
                         else
                         {
-                            WarningManager.Instance.ShowWarning("Can't delete a train station");
+                            WarningManager.Instance.ShowWarning("This tile can't be deleted");
                         }
+                    }
+                }
+                else if (_currentTool == Tool.Signal)
+                {
+                    if (GridManager.Instance.Has(_gridIndex))
+                    {
+                        var tile = GridManager.Instance.Get(_gridIndex);
+
+                        if (tile.CanOverrides)
+                        {
+                            if (tile.Signal == null)
+                            {
+                                var signalGo = Instantiate(_signalHint);
+                                var signal = signalGo.GetComponent<Signal>();
+                                signal.SR.color = Color.white;
+                                signal.SR.sortingLayerName = "Default";
+                                signal.SR.sortingOrder = 1;
+                                tile.Signal = signal;
+                            }
+                        }
+                        else
+                        {
+                            WarningManager.Instance.ShowWarning("This tile can't be modified");
+                        }
+                    }
+                    else
+                    {
+                        WarningManager.Instance.ShowWarning("A track must be placed before adding a signal");
                     }
                 }
             }
@@ -167,7 +202,20 @@ namespace LD59.Manager
                 }
                 else if (_currentTool == Tool.Eraser)
                 {
+                    if (GridManager.Instance.Has(_gridIndex))
+                    {
+                        var tile = GridManager.Instance.Get(_gridIndex);
 
+                        if (tile.CanOverrides && tile.Signal != null)
+                        {
+                            Destroy(tile.Signal);
+                            tile.Signal = null;
+                        }
+                    }
+                }
+                else if (_currentTool == Tool.Signal)
+                {
+                    // Nothing to do
                 }
             }
         }
@@ -194,6 +242,7 @@ namespace LD59.Manager
         {
             _toolDescription.text = "<b>Signal tool<b>\nLeft click: Place signal";
             foreach (var t in _hints) t.gameObject.SetActive(false);
+            _signalHint.SetActive(true);
 
             _currentTool = Tool.Signal;
         }
