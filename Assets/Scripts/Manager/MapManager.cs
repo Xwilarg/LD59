@@ -26,9 +26,9 @@ namespace LD59.Manager
         {
             GameStateManager.Instance.OnReset.AddListener(OnReset);
 
-            PlacePlatform(new(0, -10), Exit.Up, Vector2Int.down, Station.Arieta);
-            PlacePlatform(new(2, 10), Exit.Down, Vector2Int.up, Station.Sorena);
-            PlacePlatform(new(-15, 0), Exit.Right, Vector2Int.left, Station.Esie);
+            PlacePlatform(new(0, -10), Exit.Up, Station.Arieta);
+            PlacePlatform(new(2, 10), Exit.Down, Station.Sorena);
+            PlacePlatform(new(-15, 0), Exit.Right, Station.Esie);
         }
 
         public static string StationToName(Station station)
@@ -42,9 +42,10 @@ namespace LD59.Manager
             };
         }
 
-        private void PlacePlatform(Vector2Int pos, Exit usedExit, Vector2Int prolongation, Station station)
+        private void PlacePlatform(Vector2Int pos, Exit usedExit, Station station)
         {
-            var platform = new Platform() { PositionStart = pos, PositionEnd = pos + (prolongation * PlatformLength), Prolongation = prolongation, Exit = usedExit, Station = station };
+            var prolongation = -Rail.GetDirection(usedExit);
+            var platform = new Platform() { PositionStart = pos, PositionEnd = pos + (prolongation * PlatformLength), Exit = usedExit, Station = station };
             for (int i = 0; i < PlatformLength; i++)
             {
                 var go = Instantiate(_railPrefab, (Vector2)(pos + (prolongation * i)) * GridManager.GridWorld, Quaternion.identity);
@@ -86,12 +87,13 @@ namespace LD59.Manager
         {
             var platform = _platforms.First(x => x.Station == from);
             Wagon lastWagon = null;
+            var prolDir = -Rail.GetDirection(platform.Exit);
 
             for (int i = 0; i < PlatformLength; i++)
             {
-                var trainGo = Instantiate(_trainPrefab, (Vector2)(platform.PositionStart + (platform.Prolongation * i)) * GridManager.GridWorld, Quaternion.identity);
+                var trainGo = Instantiate(_trainPrefab, (Vector2)(platform.PositionStart + (prolDir * i)) * GridManager.GridWorld, Quaternion.identity);
                 var wagon = trainGo.GetComponent<Wagon>();
-                wagon.TilePos = platform.PositionStart + (platform.Prolongation * i);
+                wagon.TilePos = platform.PositionStart + (prolDir * i);
                 wagon.Direction = platform.Exit;
 
                 if (i == 0)
@@ -122,7 +124,6 @@ namespace LD59.Manager
     {
         public Vector2Int PositionStart;
         public Vector2Int PositionEnd;
-        public Vector2Int Prolongation;
         public Exit Exit;
         public Station Station;
     }
