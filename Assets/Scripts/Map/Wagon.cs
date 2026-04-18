@@ -17,6 +17,8 @@ namespace LD59.Map
         private Vector2 _startBorder, _endBorder;
 
         private float _timer = .5f;
+        private const float TrainWheelOffset = .45f;
+        private const float TrainSpeed = 2f;
 
         private void Start()
         {
@@ -34,7 +36,7 @@ namespace LD59.Map
 
         private void Update()
         {
-            _timer += Time.deltaTime * 1f;
+            _timer += Time.deltaTime * TrainSpeed;
             if (_timer > 1f)
             {
                 _timer -= 1f;
@@ -66,7 +68,13 @@ namespace LD59.Map
 
             transform.position = Vector2.Lerp(_startBorder, _endBorder, _timer);
 
-            var rot = Mathf.Atan2(_endBorder.y - _startBorder.y, _endBorder.x - _startBorder.x) * Mathf.Rad2Deg + 90f;
+            var t1 = _timer - TrainWheelOffset;
+            var t2 = _timer + TrainWheelOffset;
+
+            var p1 = t1 < .5f ? Vector2.LerpUnclamped(_startBorder, (Vector2)TilePos * GridManager.GridWorld, t1 * 2f) : Vector2.LerpUnclamped((Vector2)TilePos * GridManager.GridWorld, _endBorder, t1 * 2f - 1f);
+            var p2 = t2 < .5f ? Vector2.LerpUnclamped(_startBorder, (Vector2)TilePos * GridManager.GridWorld, t2 * 2f) : Vector2.LerpUnclamped((Vector2)TilePos * GridManager.GridWorld, _endBorder, t2 * 2f - 1f);
+
+            var rot = Mathf.Atan2(p2.y - p1.y, p2.x - p1.x) * Mathf.Rad2Deg + 90f;
             transform.rotation = Quaternion.Euler(0f, 0f, rot);
         }
 
