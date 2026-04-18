@@ -554,6 +554,7 @@ MonoBehaviour:
   _straight: {fileID: 21300000, guid: 87a60b6d38f4d2a499e5b5bbf30184da, type: 3}
   _turn: {fileID: 21300000, guid: 6e78d74b2502825419a69ab98446c301, type: 3}
   _crossing: {fileID: 21300000, guid: b4523bf2f7fe4a945a88bb37f8ab5ec3, type: 3}
+  _tCrossing: {fileID: 21300000, guid: 31b618af5e3b1b44e9ffce09b8c14e99, type: 3}
 --- !u!1001 &3770466519328585138
 PrefabInstance:
   m_ObjectHideFlags: 0
