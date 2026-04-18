@@ -29,6 +29,9 @@ namespace LD59.Map
         private const float TrainSpeed = 2f;
         private const float SpeedIncrease = 4f;
 
+        private bool _isUnresponding;
+        private Vector2 _lastVelocity;
+
         public float CurrTrainSpeed { private set; get; }
 
         private void Awake()
@@ -58,6 +61,12 @@ namespace LD59.Map
 
         private void Update()
         {
+            if (_isUnresponding)
+            {
+                transform.position += (Vector3)_lastVelocity.normalized * Time.deltaTime; // TODO: Placeholder with deltatime since previous code wasn't working
+                return;
+            }
+
             if (Leader == null)
             {
 
@@ -116,6 +125,10 @@ namespace LD59.Map
                             {
                                 Crash("Wagon got disconnected from its leading one");
                             }
+                            else
+                            {
+                                _lastVelocity = ((Vector2)(_nextPos - TilePos)).normalized * CurrTrainSpeed;
+                            }
                         }
                     }
                     else
@@ -153,7 +166,7 @@ namespace LD59.Map
         public void Crash(string reason)
         {
             GameStateManager.Instance.Loose(reason);
-            DestroyTrain();
+            _isUnresponding = true;
         }
 
         public void DestroyTrain()

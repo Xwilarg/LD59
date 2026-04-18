@@ -25,6 +25,13 @@ namespace LD59.Manager
         private void Start()
         {
             ShowNextStory();
+
+            GameStateManager.Instance.OnReset.AddListener(() =>
+            {
+                _readyUp.SetActive(true);
+            });
+
+            GameStateManager.Instance.OnReset.AddListener(() => { _storyIndex--; });
         }
 
         public void ShowNextStory()

@@ -13,6 +13,7 @@ namespace LD59.Manager
         private GameObject _railPrefab, _trainPrefab;
 
         private readonly List<Platform> _platforms = new();
+        private readonly List<Wagon> Trains = new();
 
         private const int PlatformLength = 5;
 
@@ -23,6 +24,8 @@ namespace LD59.Manager
 
         private void Start()
         {
+            GameStateManager.Instance.OnReset.AddListener(OnReset);
+
             PlacePlatform(new(0, -7), Exit.Up, Vector2Int.down, Station.Arieta);
             PlacePlatform(new(2, 7), Exit.Down, Vector2Int.up, Station.Sorena);
         }
@@ -60,6 +63,22 @@ namespace LD59.Manager
             }
         }
 
+        public void OnReset()
+        {
+            foreach (var t in Trains)
+            {
+                try
+                {
+                    t.DestroyTrain();
+                }
+                catch (System.Exception e) // Just in case
+                {
+                    Debug.LogException(e);
+                }
+            }
+            Trains.Clear();
+        }
+
         public void SpawnTrain(Station from, Station to, string label)
         {
             var platform = _platforms.First(x => x.Station == from);
@@ -76,6 +95,7 @@ namespace LD59.Manager
                 {
                     wagon.SetLabel(label);
                     wagon.Destination = to;
+                    Trains.Add(wagon);
                 }
 
                 if (lastWagon != null)
