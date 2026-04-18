@@ -11,6 +11,7 @@ namespace LD59.Map
 
         [SerializeField]
         private TMP_Text _label;
+        private string _trainLabel;
 
         public Vector2Int TilePos { set; get; }
         public Exit Direction { set; get; }
@@ -49,6 +50,7 @@ namespace LD59.Map
 
         public void SetLabel(string text)
         {
+            _trainLabel = text;
             _label.gameObject.SetActive(true);
             _label.text = text;
         }
@@ -105,7 +107,11 @@ namespace LD59.Map
                             {
                                 Crash($"Train reached {MapManager.StationToName(tile.Platform.Station)} instead of {MapManager.StationToName(Destination)}");
                             }
-                            DestroyTrain();
+                            else
+                            {
+                                StoryManager.Instance.ArriveTrain(_trainLabel);
+                                DestroyTrain();
+                            }
                             return;
                         }
 

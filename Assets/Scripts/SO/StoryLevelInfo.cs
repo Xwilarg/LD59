@@ -15,5 +15,6 @@ namespace LD59.SO
     {
         public Station From;
         public Station To;
+        public float DepartureTime;
     }
 }
