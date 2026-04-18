@@ -33,16 +33,17 @@ namespace LD59.Map
                 _timer -= 1f;
                 _lastPos = TilePos;
                 TilePos = _nextPos;
-                _nextPos = TilePos + GetDirection();
                 Debug.Log($"Railed passed, current at {TilePos} going to {_nextPos} (opposite exit is {Revert()})");
 
-                if (GridManager.Instance.Has(_nextPos))
+                if (GridManager.Instance.Has(TilePos))
                 {
-                    var tile = GridManager.Instance.Get(_nextPos);
+                    var tile = GridManager.Instance.Get(TilePos);
+                    Debug.Log($"Tile at {TilePos} have the following exists: {tile.Exits}");
                     if (tile.Exits.HasFlag(Revert()))
                     {
                         Direction = tile.GetExit(Revert());
                         Debug.Log($"Next exit it toward {Direction}");
+                        _nextPos = TilePos + GetDirection();
                     }
                     else
                     {
