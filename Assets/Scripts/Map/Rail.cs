@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using LD59.Manager;
+using UnityEngine;
 
 namespace LD59.Map
 {
@@ -6,6 +7,7 @@ namespace LD59.Map
     {
         public Exit Exits { set; get; }
         public bool CanOverrides { set; get; } = true;
+        public Platform Platform { set; get; }
 
         public SpriteRenderer SR { private set; get; }
 

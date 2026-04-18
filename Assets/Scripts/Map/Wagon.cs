@@ -50,6 +50,13 @@ namespace LD59.Map
                     // Debug.Log($"Tile at {TilePos} have the following exists: {tile.Exits}");
                     if (tile.Exits.HasFlag(Revert()))
                     {
+                        if (tile.Platform != null)
+                        {
+                            Debug.Log("Train reached platform");
+                            Destroy(gameObject);
+                            return;
+                        }
+
                         Direction = tile.GetExit(Revert());
                         // Debug.Log($"Next exit it toward {Direction}");
                         _nextPos = TilePos + GetDirection();

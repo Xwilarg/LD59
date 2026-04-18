@@ -23,21 +23,24 @@ namespace LD59.Manager
         private void Start()
         {
             PlacePlatform(new(0, -7), Exit.Up, Vector2Int.down);
+            PlacePlatform(new(2, 7), Exit.Down, Vector2Int.up);
         }
 
         private void PlacePlatform(Vector2Int pos, Exit usedExit, Vector2Int prolongation)
         {
+            var platform = new Platform() { PositionStart = pos, PositionEnd = pos + (prolongation * PlatformLength), Prolongation = prolongation, Exit = usedExit };
             for (int i = 0; i < PlatformLength; i++)
             {
                 var go = Instantiate(_railPrefab, (Vector2)(pos + (prolongation * i)) * GridManager.GridWorld, Quaternion.identity);
                 var rail = go.GetComponent<Rail>();
-                var platform = SpriteManager.Instance.GetPlatform();
-                rail.SR.sprite = platform.Sprite;
-                rail.Exits = platform.Exits;
+                var rs = SpriteManager.Instance.GetPlatform();
+                rail.SR.sprite = rs.Sprite;
+                rail.Exits = rs.Exits;
                 rail.CanOverrides = false;
                 GridManager.Instance.Register(pos + (prolongation * i), rail);
 
-                if (i == 0) _platforms.Add(new() { PositionStart = pos, PositionEnd = pos + (prolongation * PlatformLength), Prolongation = prolongation,  Exit = usedExit });
+                if (i == 0) _platforms.Add(platform);
+                else if (i == PlatformLength - 1) rail.Platform = platform;
             }
         }
 
