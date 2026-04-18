@@ -14,6 +14,7 @@ namespace LD59.Map
 
         public Vector2Int TilePos { set; get; }
         public Exit Direction { set; get; }
+        public Station Destination { set; get; } = (Station)(-1);
 
         public Wagon Leader { set; get; }
         public Wagon Follower { set; get; }
@@ -91,6 +92,10 @@ namespace LD59.Map
                     {
                         if (tile.Platform != null)
                         {
+                            if (tile.Platform.Station != Destination)
+                            {
+                                Crash($"Train reached {MapManager.StationToName(tile.Platform.Station)} instead of {MapManager.StationToName(Destination)}");
+                            }
                             DestroyTrain();
                             return;
                         }

@@ -44,10 +44,10 @@ namespace LD59.Map
             _label.gameObject.SetActive(false);
         }
 
-        public void SetLabel(string text)
+        public void SetLabel(Station station)
         {
             _label.gameObject.SetActive(true);
-            _label.text = text;
+            _label.text = MapManager.StationToName(station);
         }
 
         public void UpdatePathIndex()

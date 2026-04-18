@@ -1,5 +1,6 @@
 ﻿using LD59.Map;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace LD59.Manager
@@ -26,7 +27,7 @@ namespace LD59.Manager
             PlacePlatform(new(2, 7), Exit.Down, Vector2Int.up, Station.Sorena);
         }
 
-        private string StationToName(Station station)
+        public static string StationToName(Station station)
         {
             return station switch
             {
@@ -38,7 +39,7 @@ namespace LD59.Manager
 
         private void PlacePlatform(Vector2Int pos, Exit usedExit, Vector2Int prolongation, Station station)
         {
-            var platform = new Platform() { PositionStart = pos, PositionEnd = pos + (prolongation * PlatformLength), Prolongation = prolongation, Exit = usedExit };
+            var platform = new Platform() { PositionStart = pos, PositionEnd = pos + (prolongation * PlatformLength), Prolongation = prolongation, Exit = usedExit, Station = station };
             for (int i = 0; i < PlatformLength; i++)
             {
                 var go = Instantiate(_railPrefab, (Vector2)(pos + (prolongation * i)) * GridManager.GridWorld, Quaternion.identity);
@@ -53,7 +54,7 @@ namespace LD59.Manager
                 if (i == 0)
                 {
                     _platforms.Add(platform);
-                    rail.SetLabel(StationToName(station));
+                    rail.SetLabel(station);
                 }
                 else if (i == PlatformLength - 1) rail.Platform = platform;
             }
@@ -61,7 +62,7 @@ namespace LD59.Manager
 
         public void SpawnTrain(Station from, Station to, string label)
         {
-            var platform = _platforms[0];//[Random.Range(0, _platforms.Count)];
+            var platform = _platforms.First(x => x.Station == from);
             Wagon lastWagon = null;
 
             for (int i = 0; i < PlatformLength; i++)
@@ -74,6 +75,7 @@ namespace LD59.Manager
                 if (i == 0)
                 {
                     wagon.SetLabel(label);
+                    wagon.Destination = to;
                 }
 
                 if (lastWagon != null)
@@ -98,5 +100,6 @@ namespace LD59.Manager
         public Vector2Int PositionEnd;
         public Vector2Int Prolongation;
         public Exit Exit;
+        public Station Station;
     }
 }
