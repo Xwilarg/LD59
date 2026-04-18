@@ -100,7 +100,7 @@ namespace LD59.Manager
                 var existing = tExisting.Exits;
                 var exits = tile.Exits | existing;
 
-                Debug.Log($"[PLAC] Hinting tile over an existing one, mixing {tile.Exits} and {existing} which gives {exits}");
+                //Debug.Log($"[PLAC] Hinting tile over an existing one, mixing {tile.Exits} and {existing} which gives {exits}");
                 var matchingTile = SpriteManager.Instance.All.First(x => x.Exits == exits);
 
                 tile = matchingTile;
@@ -147,7 +147,7 @@ namespace LD59.Manager
                         elem.Exits = _tileRail.Exits;
                         elem.transform.rotation = Quaternion.Euler(0f, 0f, _tileRail.transform.rotation.eulerAngles.z);
                         elem.SR.sprite = _tileRail.SR.sprite;
-                        Debug.Log($"[PLAC] Placed tile with exists {elem.Exits}");
+                        //Debug.Log($"[PLAC] Placed tile with exists {elem.Exits}");
                     }
                     else
                     {
@@ -158,7 +158,7 @@ namespace LD59.Manager
                         rail.SR.sortingLayerName = "Default";
                         rail.SR.color = Color.white;
                         rail.Exits = _tileRail.Exits;
-                        Debug.Log($"[PLAC] Placed tile with exists {rail.Exits}");
+                        //Debug.Log($"[PLAC] Placed tile with exists {rail.Exits}");
                     }
                 }
                 else if (_currentTool == Tool.Eraser)
@@ -258,6 +258,18 @@ namespace LD59.Manager
                 else if (_currentTool == Tool.Signal)
                 {
                     // Nothing to do
+                }
+                else if (_currentTool == Tool.Configure)
+                {
+                    if (GridManager.Instance.Has(_gridIndex))
+                    {
+                        var tile = GridManager.Instance.Get(_gridIndex);
+
+                        if (tile.HaveManyExits())
+                        {
+                            tile.UpdatePathIndex();
+                        }
+                    }
                 }
             }
         }

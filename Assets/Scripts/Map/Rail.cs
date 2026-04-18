@@ -1,7 +1,8 @@
 ﻿using LD59.Manager;
-using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace LD59.Map
 {
@@ -9,6 +10,9 @@ namespace LD59.Map
     {
         [SerializeField]
         private LineRenderer _lineHint;
+
+        private readonly List<ExitPair> _allPaths = new();
+        private int _pathIndex;
 
         private Exit _exits;
         public Exit Exits
@@ -20,8 +24,6 @@ namespace LD59.Map
             }
             get => _exits;
         }
-
-        private Exit _path = Exit.None;
 
         public bool IsHint { set; get; } = true;
 
@@ -35,6 +37,12 @@ namespace LD59.Map
         private void Awake()
         {
             SR = GetComponent<SpriteRenderer>();
+        }
+
+        public void UpdatePathIndex()
+        {
+            _pathIndex = (_pathIndex + 1) % _allPaths.Count;
+            UpdateRender();
         }
 
         public void UpdateRender()
@@ -51,19 +59,37 @@ namespace LD59.Map
                 _lineHint.gameObject.SetActive(true);
 
                 _lineHint.positionCount = 2;
-                var list = ExitFlagToList(_path);
-                Assert.IsTrue(list.Length == 2, $"Rail path doesn't isn't a line, value contained: {_path} (list values: {string.Join(", ", list)})");
+                ExitPair pair = _allPaths[_pathIndex];
 
-                var pos1 = (Vector3)((Vector2)transform.position * 2f + ((Vector2)GetDirection(list[0]) * GridManager.GridWorld)) / 2f;
-                var pos2 = (Vector3)((Vector2)transform.position * 2f + ((Vector2)GetDirection(list[1]) * GridManager.GridWorld)) / 2f;
+                var pos1 = (Vector3)((Vector2)transform.position * 2f + ((Vector2)GetDirection(pair.E1) * GridManager.GridWorld)) / 2f;
+                var pos2 = (Vector3)((Vector2)transform.position * 2f + ((Vector2)GetDirection(pair.E2) * GridManager.GridWorld)) / 2f;
                 _lineHint.SetPositions(new[] { pos1, pos2 });
+
+                // Update list of exits
+                var allExits = ExitFlagToList(Exits);
+                for (int a = 0; a < allExits.Length; a++)
+                {
+                    for (int b = a + 1; b < allExits.Length; b++)
+                    {
+                        var e1 = allExits[a];
+                        var e2 = allExits[b];
+                        Assert.AreNotEqual(e1, e2, $"Trying to make a path where entrance lead to exit");
+
+                        if (!_allPaths.Any(x => (x.E1 == e1 && x.E2 == e2) || (x.E1 == e2 && x.E2 == e1)))
+                        {
+                            _allPaths.Add(new() { E1 = e1, E2 = e2 });
+                        }
+                    }
+                }
             }
             else
             {
                 _lineHint.gameObject.SetActive(false);
-                if (_path == Exit.None)
+                if (_allPaths.Count == 0)
                 {
-                    _path = Exits;
+                    var list = ExitFlagToList(Exits);
+                    Assert.IsTrue(list.Length == 2, $"Rail path doesn't isn't a line (list values: {string.Join(", ", list)})");
+                    _allPaths.Add(new ExitPair() { E1 = list[0], E2 = list[1] });
                 }
             }
         }
@@ -119,5 +145,11 @@ namespace LD59.Map
         Down = 2,
         Left = 4,
         Right = 8
+    }
+
+    public record ExitPair
+    {
+        public Exit E1;
+        public Exit E2;
     }
 }
