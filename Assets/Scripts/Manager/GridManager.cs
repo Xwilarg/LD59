@@ -10,6 +10,7 @@ namespace LD59.Manager
 
         public static readonly int GridSize = 64;
         public static readonly float GridWorld = .64f;
+        public static readonly float HalfGridWorld = .32f;
 
         private Dictionary<Vector2Int, Rail> _grid = new();
 
