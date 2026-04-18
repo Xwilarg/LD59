@@ -1,4 +1,5 @@
 ﻿using LD59.Map;
+using Sketch.VN;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -111,7 +112,7 @@ namespace LD59.Manager
             _tileRail.Exits = tile.Exits;
         }
 
-        private bool IsClickOnUI()
+        public static bool IsClickOnUI()
         {
             PointerEventData pointerEventData = new(EventSystem.current)
             {
@@ -133,7 +134,11 @@ namespace LD59.Manager
         {
             if (value.phase == InputActionPhase.Started && !IsClickOnUI())
             {
-                if (_currentTool == Tool.Rail)
+                if (VNManager.Instance.IsStoryOngoing)
+                {
+                    VNManager.Instance.DisplayNextDialogue();
+                }
+                else if (_currentTool == Tool.Rail)
                 {
                     if (GridManager.Instance.Has(_gridIndex))
                     {
@@ -233,7 +238,7 @@ namespace LD59.Manager
 
         public void OnRotate(InputAction.CallbackContext value)
         {
-            if (value.phase == InputActionPhase.Started && !IsClickOnUI())
+            if (value.phase == InputActionPhase.Started && !IsClickOnUI() && !VNManager.Instance.IsStoryOngoing)
             {
                 if (_currentTool == Tool.Rail)
                 {
