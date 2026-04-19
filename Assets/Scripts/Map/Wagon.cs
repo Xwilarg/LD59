@@ -12,6 +12,7 @@ namespace LD59.Map
         [SerializeField]
         private TMP_Text _label;
         private string _trainLabel;
+        public string RawTrainLevel { private set; get; }
 
         public Vector2Int TilePos { set; get; }
         public Exit Direction { set; get; }
@@ -53,8 +54,20 @@ namespace LD59.Map
             CalculateBorders();
         }
 
-        public void SetLabel(string text)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
+            if (collision.TryGetComponent<Wagon>(out var wagon))
+            {
+                if (wagon != Follower && wagon != Leader)
+                {
+                    Crash($"{RawTrainLevel} crashed into {wagon.RawTrainLevel}");
+                }
+            }
+        }
+
+        public void SetLabel(string text, string rawText)
+        {
+            RawTrainLevel = rawText;
             _trainLabel = text;
             _label.gameObject.SetActive(true);
             _label.text = text;

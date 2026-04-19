@@ -77,7 +77,7 @@ namespace LD59.Manager
                 else if (t.Status == TrainStatus.Announced && _timer >= t.Info.DepartureTime)
                 {
                     t.Status = TrainStatus.Launched;
-                    MapManager.Instance.SpawnTrain(t.Info.From, t.Info.To, t.Label);
+                    MapManager.Instance.SpawnTrain(t.Info.From, t.Info.To, t.Label, t.PlainLabel);
                     t.Annoucement.SetDescription($"From {MapManager.Instance.ColorNameWithStation(t.Info.From, MapManager.StationToName(t.Info.From))}\nTo {MapManager.Instance.ColorNameWithStation(t.Info.To, MapManager.StationToName(t.Info.To))}");
                     WarningManager.Instance.ShowWarning($"{t.PlainLabel} is leaving from {MapManager.StationToName(t.Info.From)} to {MapManager.StationToName(t.Info.To)}");
                 }

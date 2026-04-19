@@ -114,7 +114,7 @@ namespace LD59.Manager
             Trains.Clear();
         }
 
-        public void SpawnTrain(Station from, Station to, string label)
+        public void SpawnTrain(Station from, Station to, string label, string rawLabel)
         {
             var platform = _platforms.First(x => x.Station == from);
             Wagon lastWagon = null;
@@ -129,7 +129,7 @@ namespace LD59.Manager
 
                 if (i == 0)
                 {
-                    wagon.SetLabel(label);
+                    wagon.SetLabel(label, rawLabel);
                     wagon.Destination = to;
                     Trains.Add(wagon);
                 }
