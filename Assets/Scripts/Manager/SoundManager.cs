@@ -7,7 +7,7 @@ namespace LD59.Manager
         public static SoundManager Instance { private set; get; }
 
         [SerializeField]
-        private AudioSource _annoucement;
+        private AudioSource _annoucement, _trackPlacement;
 
         private void Awake()
         {
@@ -17,6 +17,11 @@ namespace LD59.Manager
         public void PlayAnnoucement()
         {
             _annoucement.Play();
+        }
+
+        public void PlayTrackPlacement()
+        {
+            _trackPlacement.Play();
         }
     }
 }

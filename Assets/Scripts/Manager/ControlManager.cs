@@ -127,6 +127,8 @@ namespace LD59.Manager
                     elem.transform.rotation = Quaternion.Euler(0f, 0f, _tileRail.transform.rotation.eulerAngles.z);
                     elem.SR.sprite = _tileRail.SR.sprite;
                     //Debug.Log($"[PLAC] Placed tile with exists {elem.Exits}");
+
+                    SoundManager.Instance.PlayTrackPlacement();
                 }
                 else
                 {
@@ -138,6 +140,8 @@ namespace LD59.Manager
                     rail.SR.color = Color.white;
                     rail.Exits = _tileRail.Exits;
                     //Debug.Log($"[PLAC] Placed tile with exists {rail.Exits}");
+
+                    SoundManager.Instance.PlayTrackPlacement();
                 }
             }
             else if (_currentTool == Tool.Eraser)
