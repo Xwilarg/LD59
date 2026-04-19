@@ -1,11 +1,9 @@
-﻿using LD59.Map;
-using LD59.SO;
+﻿using LD59.SO;
 using LD59.VN;
 using Sketch.VN;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace LD59.Manager
