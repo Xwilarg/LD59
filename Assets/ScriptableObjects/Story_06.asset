@@ -42,5 +42,17 @@ MonoBehaviour:
     To: 3
     DepartureTime: 40
     Type: 2
+  - From: 0
+    To: 3
+    DepartureTime: 52
+    Type: 2
+  - From: 3
+    To: 1
+    DepartureTime: 55
+    Type: 0
+  - From: 2
+    To: 3
+    DepartureTime: 58
+    Type: 2
   FreeJunctions: 1
   FreeSignals: 1
