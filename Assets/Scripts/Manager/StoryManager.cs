@@ -71,7 +71,7 @@ namespace LD59.Manager
                     var go = Instantiate(_timetablePrefab, _timetableContainer);
                     t.Annoucement = go.GetComponent<TrainPopup>();
                     t.Annoucement.SetLabel(t.Label);
-                    t.Annoucement.SetDescription($"Departure announced from {MapManager.Instance.ColorNameWithStation(t.Info.From, MapManager.StationToName(t.Info.From))}");
+                    t.Annoucement.SetDescription($"Departure announced from {MapManager.Instance.ColorNameWithStation(t.Info.From, MapManager.StationToName(t.Info.From))} to {MapManager.Instance.ColorNameWithStation(t.Info.To, MapManager.StationToName(t.Info.To))}");
                     WarningManager.Instance.ShowWarning($"{t.PlainLabel} is leaving in 10 seconds from {MapManager.StationToName(t.Info.From)} to {MapManager.StationToName(t.Info.To)}");
                 }
                 else if (t.Status == TrainStatus.Announced && _timer >= t.Info.DepartureTime)
