@@ -169,6 +169,34 @@ namespace LD59.Manager
             }
         }
 
+        public void DeleteAllRails()
+        {
+            for (int y = -14; y < 15; y++)
+            {
+                for (int x = -14; x < 15; x++)
+                {
+                    var pos = new Vector2Int(x, y);
+
+                    if (GridManager.Instance.Has(pos))
+                    {
+                        var tile = GridManager.Instance.Get(pos);
+
+                        if (tile.CanOverrides)
+                        {
+                            if (tile.Signal != null)
+                            {
+                                Destroy(tile.Signal.gameObject);
+                            }
+                            Destroy(tile.gameObject);
+                            GridManager.Instance.Delete(pos);
+
+                            UpdateSprite(); // Update rail sprite since the rail that was there don't exist anymore
+                        }
+                    }
+                }
+            }
+        }
+
         private void UpdateSprite()
         {
             var tile = _sprites[_currIndex];
