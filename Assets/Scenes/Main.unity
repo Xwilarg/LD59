@@ -3318,6 +3318,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LD59.Manager.MapManager
   _railPrefab: {fileID: 6727168200951979094, guid: 01ea3043d741e8240a3c02a915dad51a, type: 3}
   _trainPrefab: {fileID: 4796762676579367743, guid: 6aec6ddfa69f48040b24386900550d6f, type: 3}
+  _hintInbound: {fileID: 21300000, guid: 0bfe67093ffba594ea62640315de7fa0, type: 3}
+  _hintOutbound: {fileID: 21300000, guid: 00892d6866d44e2498d992520a82a139, type: 3}
+  _hintBothways: {fileID: 21300000, guid: 9c298aaf0ba48bf488e291f426d32291, type: 3}
 --- !u!114 &2061069992
 MonoBehaviour:
   m_ObjectHideFlags: 0

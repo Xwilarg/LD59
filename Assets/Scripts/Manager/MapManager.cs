@@ -12,6 +12,9 @@ namespace LD59.Manager
         [SerializeField]
         private GameObject _railPrefab, _trainPrefab;
 
+        [SerializeField]
+        private Sprite _hintInbound, _hintOutbound, _hintBothways;
+
         private readonly List<Platform> _platforms = new();
         private readonly List<Wagon> Trains = new();
 
@@ -32,9 +35,23 @@ namespace LD59.Manager
             GameStateManager.Instance.OnReset.AddListener(OnReset);
 
             PlacePlatform(new(-2, -10), Exit.Up, Station.Arieta, ColorFrom255(39, 108, 219)); // Blue
-            PlacePlatform(new(0, 10), Exit.Down, Station.Sorena, ColorFrom255(45, 219, 39)); // Orange
+            PlacePlatform(new(-3, 10), Exit.Down, Station.Sorena, ColorFrom255(45, 219, 39)); // Orange
             PlacePlatform(new(-15, 0), Exit.Right, Station.Esie, ColorFrom255(105, 74, 13)); // Orange
             PlacePlatform(new(6, -10), Exit.Up, Station.Läi, ColorFrom255(150, 39, 219)); //¨Purple
+        }
+
+        public void SetupStations(IEnumerable<Station> inbounds, IEnumerable<Station> outbounds)
+        {
+            foreach (var p in _platforms)
+            {
+                var isInbound = inbounds.Contains(p.Station);
+                var isOutbound = outbounds.Contains(p.Station);
+
+                if (isInbound && isOutbound) p.AssociatedRail.ToggleSendHint(_hintBothways);
+                else if (!isInbound && !isOutbound) p.AssociatedRail.ToggleSendHint(null);
+                else if (isInbound) p.AssociatedRail.ToggleSendHint(_hintInbound);
+                else p.AssociatedRail.ToggleSendHint(_hintOutbound);
+            }
         }
 
         public static string StationToName(Station station)
@@ -73,6 +90,7 @@ namespace LD59.Manager
 
                 if (i == 0)
                 {
+                    platform.AssociatedRail = rail;
                     _platforms.Add(platform);
                     rail.SetLabel(station, color);
                 }
@@ -141,5 +159,7 @@ namespace LD59.Manager
         public Exit Exit;
         public Station Station;
         public Color Color;
+
+        public Rail AssociatedRail;
     }
 }

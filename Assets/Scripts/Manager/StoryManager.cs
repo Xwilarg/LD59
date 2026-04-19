@@ -121,6 +121,9 @@ namespace LD59.Manager
                 });
                 id++;
             }
+
+            MapManager.Instance.SetupStations(story.Trains.Select(x => x.From), story.Trains.Select(x => x.To));
+
             _storyIndex++;
 
             _readyUp.SetActive(false);

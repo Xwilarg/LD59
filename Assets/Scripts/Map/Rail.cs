@@ -18,6 +18,9 @@ namespace LD59.Map
         [SerializeField]
         private GameObject _labelContainer;
 
+        [SerializeField]
+        private SpriteRenderer _sendHint;
+
         private readonly List<ExitPair> _allPaths = new();
         private int _pathIndex;
 
@@ -46,6 +49,8 @@ namespace LD59.Map
             SR = GetComponent<SpriteRenderer>();
             _label.gameObject.SetActive(false);
             _labelContainer.SetActive(false);
+
+            _sendHint.gameObject.SetActive(false);
         }
 
         public void SetLabel(Station station, Color color)
@@ -54,6 +59,19 @@ namespace LD59.Map
             _label.gameObject.SetActive(true);
             _label.text = MapManager.StationToName(station);
             _label.color = color;
+        }
+
+        public void ToggleSendHint(Sprite sprite)
+        {
+            if (sprite == null)
+            {
+                _sendHint.gameObject.SetActive(false);
+            }
+            else
+            {
+                _sendHint.gameObject.SetActive(true);
+                _sendHint.sprite = sprite;
+            }
         }
 
         public void UpdatePathIndex()
