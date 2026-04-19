@@ -32,6 +32,7 @@ namespace LD59.Manager
 
         public void ShowWarning(string text)
         {
+            SoundManager.Instance.PlayAnnoucement();
             _warning.gameObject.SetActive(true);
             _warning.text = text;
             _timer = 3f;
