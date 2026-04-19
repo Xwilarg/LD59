@@ -6,6 +6,11 @@ namespace LD59.Manager
     {
         public static SoundManager Instance { private set; get; }
 
+        private bool _isBgmActive = true;
+
+        [SerializeField]
+        private AudioSource _bgm;
+
         [SerializeField]
         private AudioSource _annoucement, _trackPlacement;
 
@@ -22,6 +27,12 @@ namespace LD59.Manager
         public void PlayTrackPlacement()
         {
             _trackPlacement.Play();
+        }
+
+        public void ToggleBGM()
+        {
+            _isBgmActive = !_isBgmActive;
+            _bgm.volume = _isBgmActive ? 1f : 0f;
         }
     }
 }

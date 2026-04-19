@@ -158,6 +158,13 @@ namespace LD59.Manager
             ShowNextStory();
         }
 
+        public void ResetChapter()
+        {
+            if (!_isPlaying) _storyIndex++;
+            GameStateManager.Instance.OnReset.Invoke();
+            ShowNextStory();
+        }
+
         public void LaunchTrains()
         {
             _timer = 0f;
