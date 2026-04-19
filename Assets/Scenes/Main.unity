@@ -8739,8 +8739,8 @@ MonoBehaviour:
   m_text: 'Stations are where you trains come and must go.
 
     To know what the
-    station do, you can look at the arrow next to it, <color=green>green</color>
-    mean the station will send train and <color=red>red</color> mean it''ll receive
+    station do, you can look at the arrow next to it, green mean the station will
+    <color=green>send</color> trains and red mean it''ll <color=red>receive</color>
     them'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f1493050f4798574d9dc75584d2666e8, type: 2}
