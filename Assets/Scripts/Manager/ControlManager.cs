@@ -180,7 +180,7 @@ namespace LD59.Manager
                         var rail = go.GetComponent<Rail>();
                         GridManager.Instance.Register(_gridIndex, rail);
                         rail.IsHint = false;
-                        rail.SR.sortingLayerName = "Default";
+                        rail.SR.sortingLayerName = "Rail";
                         rail.SR.color = Color.white;
                         rail.Exits = _tileRail.Exits;
                         //Debug.Log($"[PLAC] Placed tile with exists {rail.Exits}");

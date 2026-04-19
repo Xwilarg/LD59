@@ -1,4 +1,5 @@
 ﻿using LD59.SO;
+using LD59.VN;
 using Sketch.VN;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,12 @@ namespace LD59.Manager
 
         [SerializeField]
         private Button _junctionBtn, _signalBtn;
+
+        [Header("Timetable")]
+        [SerializeField]
+        public Transform _timetableContainer;
+        [SerializeField]
+        public GameObject _timetablePrefab;
 
         private float _timer;
         private bool _isPlaying = false;
@@ -60,13 +67,18 @@ namespace LD59.Manager
                 if (t.Status == TrainStatus.Waiting && _timer >= t.Info.DepartureTime - 10f)
                 {
                     t.Status = TrainStatus.Announced;
-                    WarningManager.Instance.ShowWarning($"{t.Label} is leaving in 10 seconds from {MapManager.StationToName(t.Info.From)} to {MapManager.StationToName(t.Info.To)}");
+                    var go = Instantiate(_timetablePrefab, _timetableContainer);
+                    t.Annoucement = go.GetComponent<TrainPopup>();
+                    t.Annoucement.SetLabel(t.Label);
+                    t.Annoucement.SetDescription($"Departure announced from {MapManager.Instance.ColorNameWithStation(t.Info.From, MapManager.StationToName(t.Info.From))}");
+                    WarningManager.Instance.ShowWarning($"{t.PlainLabel} is leaving in 10 seconds from {MapManager.StationToName(t.Info.From)} to {MapManager.StationToName(t.Info.To)}");
                 }
                 else if (t.Status == TrainStatus.Announced && _timer >= t.Info.DepartureTime)
                 {
                     t.Status = TrainStatus.Launched;
                     MapManager.Instance.SpawnTrain(t.Info.From, t.Info.To, t.Label);
-                    WarningManager.Instance.ShowWarning($"{t.Label} is leaving from {MapManager.StationToName(t.Info.From)} to {MapManager.StationToName(t.Info.To)}");
+                    t.Annoucement.SetDescription($"From {MapManager.Instance.ColorNameWithStation(t.Info.From, MapManager.StationToName(t.Info.From))}\nTo {MapManager.Instance.ColorNameWithStation(t.Info.To, MapManager.StationToName(t.Info.To))}");
+                    WarningManager.Instance.ShowWarning($"{t.PlainLabel} is leaving from {MapManager.StationToName(t.Info.From)} to {MapManager.StationToName(t.Info.To)}");
                 }
             }
         }
@@ -99,11 +111,12 @@ namespace LD59.Manager
             int id = 1;
             foreach (var t in story.Trains)
             {
-                var label = $"{t.From.ToString()[0]}{t.To.ToString()[0]}{id:00}";
+                var label = $"{MapManager.Instance.ColorNameWithStation(t.From, t.From.ToString()[0].ToString())}{MapManager.Instance.ColorNameWithStation(t.To, t.To.ToString()[0].ToString())}{id:X2}";
                 _trains.Add(new()
                 {
                     Status = TrainStatus.Waiting,
                     Info = t,
+                    PlainLabel = $"{t.From.ToString()[0]}{t.To.ToString()[0]}{id:X2}",
                     Label = label
                 });
                 id++;
@@ -115,7 +128,9 @@ namespace LD59.Manager
 
         public void ArriveTrain(string label)
         {
-            _trains.First(x => x.Label == label).Status = TrainStatus.Arrived;
+            var t = _trains.First(x => x.Label == label);
+            t.Status = TrainStatus.Arrived;
+            Destroy(t.Annoucement.gameObject);
 
             if (_trains.All(x => x.Status == TrainStatus.Arrived))
             {
@@ -130,7 +145,10 @@ namespace LD59.Manager
     {
         public TrainStatus Status;
         public StoryTrain Info;
+        public string PlainLabel;
         public string Label;
+
+        public TrainPopup Annoucement;
     }
 
     public enum TrainStatus

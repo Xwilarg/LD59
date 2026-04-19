@@ -22,14 +22,19 @@ namespace LD59.Manager
             Instance = this;
         }
 
+        private Color ColorFrom255(int r, int g, int b)
+        {
+            return new Color(r / 255f, g / 255f, b / 255f);
+        }
+
         private void Start()
         {
             GameStateManager.Instance.OnReset.AddListener(OnReset);
 
-            PlacePlatform(new(-2, -10), Exit.Up, Station.Arieta);
-            PlacePlatform(new(0, 10), Exit.Down, Station.Sorena);
-            PlacePlatform(new(-15, 0), Exit.Right, Station.Esie);
-            PlacePlatform(new(6, -10), Exit.Up, Station.Läi);
+            PlacePlatform(new(-2, -10), Exit.Up, Station.Arieta, ColorFrom255(39, 108, 219)); // Blue
+            PlacePlatform(new(0, 10), Exit.Down, Station.Sorena, ColorFrom255(45, 219, 39)); // Orange
+            PlacePlatform(new(-15, 0), Exit.Right, Station.Esie, ColorFrom255(105, 74, 13)); // Orange
+            PlacePlatform(new(6, -10), Exit.Up, Station.Läi, ColorFrom255(150, 39, 219)); //¨Purple
         }
 
         public static string StationToName(Station station)
@@ -44,10 +49,16 @@ namespace LD59.Manager
             };
         }
 
-        private void PlacePlatform(Vector2Int pos, Exit usedExit, Station station)
+        public string ColorNameWithStation(Station station, string text)
+        {
+            var target = _platforms.First(x => x.Station == station).Color;
+            return $"<color=#{Mathf.RoundToInt(target.r * 255):X2}{Mathf.RoundToInt(target.g * 255):X2}{Mathf.RoundToInt(target.b * 255):X2}>{text}</color>";
+        }
+
+        private void PlacePlatform(Vector2Int pos, Exit usedExit, Station station, Color color)
         {
             var prolongation = -Rail.GetDirection(usedExit);
-            var platform = new Platform() { PositionStart = pos, PositionEnd = pos + (prolongation * PlatformLength), Exit = usedExit, Station = station };
+            var platform = new Platform() { PositionStart = pos, PositionEnd = pos + (prolongation * PlatformLength), Exit = usedExit, Station = station, Color = color };
             for (int i = 0; i < PlatformLength; i++)
             {
                 var go = Instantiate(_railPrefab, (Vector2)(pos + (prolongation * i)) * GridManager.GridWorld, Quaternion.identity);
@@ -63,7 +74,7 @@ namespace LD59.Manager
                 if (i == 0)
                 {
                     _platforms.Add(platform);
-                    rail.SetLabel(station);
+                    rail.SetLabel(station, color);
                 }
                 else if (i == PlatformLength - 1) rail.Platform = platform;
             }
@@ -129,5 +140,6 @@ namespace LD59.Manager
         public Vector2Int PositionEnd;
         public Exit Exit;
         public Station Station;
+        public Color Color;
     }
 }

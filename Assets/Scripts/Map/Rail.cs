@@ -15,6 +15,9 @@ namespace LD59.Map
         [SerializeField]
         private TMP_Text _label;
 
+        [SerializeField]
+        private GameObject _labelContainer;
+
         private readonly List<ExitPair> _allPaths = new();
         private int _pathIndex;
 
@@ -42,12 +45,15 @@ namespace LD59.Map
         {
             SR = GetComponent<SpriteRenderer>();
             _label.gameObject.SetActive(false);
+            _labelContainer.SetActive(false);
         }
 
-        public void SetLabel(Station station)
+        public void SetLabel(Station station, Color color)
         {
+            _labelContainer.SetActive(true);
             _label.gameObject.SetActive(true);
             _label.text = MapManager.StationToName(station);
+            _label.color = color;
         }
 
         public void UpdatePathIndex()

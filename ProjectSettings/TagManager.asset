@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Rail
+    uniqueID: 2990855361
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
