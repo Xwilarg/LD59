@@ -17,7 +17,7 @@ namespace LD59.Manager
         {
             Instance = this;
 
-            _pauseText.SetActive(false);
+            if (_pauseText != null) _pauseText.SetActive(false);
         }
 
         public bool IsGameOver { private set; get; }

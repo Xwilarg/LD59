@@ -36,9 +36,9 @@ namespace LD59.Manager
         {
             GameStateManager.Instance.OnReset.AddListener(OnReset);
 
-            PlacePlatform(new(-2, -10), Exit.Up, Station.Arieta, ColorFrom255(39, 108, 219)); // Blue
-            PlacePlatform(new(-3, 10), Exit.Down, Station.Sorena, ColorFrom255(45, 219, 39)); // Green
-            PlacePlatform(new(-15, 0), Exit.Right, Station.Esie, ColorFrom255(105, 74, 13)); // Orange
+            PlacePlatform(new(-2, -10), Exit.Up, Station.Arieta, ColorFrom255(39, 108, 219)); // Dark-Blue
+            PlacePlatform(new(-3, 10), Exit.Down, Station.Sorena, ColorFrom255(63, 191, 34)); // Green
+            PlacePlatform(new(-15, 0), Exit.Right, Station.Esie, ColorFrom255(34, 191, 165)); // Light-Blue
             PlacePlatform(new(6, 10), Exit.Down, Station.Lai, ColorFrom255(150, 39, 219)); // Purple
         }
 
