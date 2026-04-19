@@ -30,12 +30,12 @@ namespace LD59.Manager
             }
         }
 
-        public void ShowWarning(string text)
+        public void ShowWarning(string text, bool important = false)
         {
             SoundManager.Instance.PlayAnnoucement();
             _warning.gameObject.SetActive(true);
             _warning.text = text;
-            _timer = 3f;
+            _timer = important ? 10f : 3f;
         }
     }
 }

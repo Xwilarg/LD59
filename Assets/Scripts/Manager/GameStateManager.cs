@@ -32,7 +32,7 @@ namespace LD59.Manager
             if (IsGameOver) return;
 
             IsGameOver = true;
-            WarningManager.Instance.ShowWarning($"An accident happened: {reason}");
+            WarningManager.Instance.ShowWarning($"An accident happened: {reason}", true);
             _looseTimer = 1f;
         }
 
