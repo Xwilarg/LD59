@@ -6532,6 +6532,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5af93662-2f05-471a-8c96-e221f4b61137
     m_ActionName: 'Player/Pause[/Keyboard/p]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2061069989}
+        m_TargetAssemblyTypeName: LD59.Manager.ControlManager, Assembly-CSharp
+        m_MethodName: OnSwitchTool
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 85c0a60d-405d-4666-be4a-299639a77f74
+    m_ActionName: 'Player/NextTool[/Mouse/scroll]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

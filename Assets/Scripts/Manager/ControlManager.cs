@@ -358,6 +358,37 @@ namespace LD59.Manager
             _currentTool = Tool.Configure;
         }
 
+        public void OnSwitchTool(InputAction.CallbackContext value)
+        {
+            if (value.phase == InputActionPhase.Started)
+            {
+                var mov = value.ReadValue<Vector2>();
+                if (mov.y != 0f)
+                {
+                    if (mov.y < 0f)
+                    {
+                        if (_currentTool == Tool.Configure) _currentTool = Tool.Rail;
+                        else _currentTool++;
+                    }
+                    else
+                    {
+                        if (_currentTool == Tool.Rail) _currentTool = Tool.Configure;
+                        else _currentTool--;
+                    }
+
+                    switch (_currentTool)
+                    {
+                        case Tool.Rail: SelectRailTool(); break;
+                        case Tool.Eraser: SelectErasedTool(); break;
+                        case Tool.Signal: SelectSignalTool(); break;
+                        case Tool.Configure: SelectConfigureTool(); break;
+
+                        default: throw new System.NotImplementedException();
+                    }
+                }
+            }
+        }
+
         public void OnPress1(InputAction.CallbackContext value) { if (value.phase == InputActionPhase.Started && _toolButtons[0].interactable) _toolButtons[0].onClick.Invoke(); }
         public void OnPress2(InputAction.CallbackContext value) { if (value.phase == InputActionPhase.Started && _toolButtons[1].interactable) _toolButtons[1].onClick.Invoke(); }
         public void OnPress3(InputAction.CallbackContext value) { if (value.phase == InputActionPhase.Started && _toolButtons[2].interactable) _toolButtons[2].onClick.Invoke(); }
