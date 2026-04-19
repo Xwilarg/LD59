@@ -32,6 +32,8 @@ namespace LD59.Manager
         private GameObject _toolbar;
         private Button[] _toolButtons;
 
+        private bool _isPressingLeftClick;
+
         private int _currIndex;
 
         private Camera _cam;
@@ -85,6 +87,81 @@ namespace LD59.Manager
                 foreach (var t in _hints) t.position = (Vector2)gridPos / 100f;
 
                 UpdateSprite();
+
+                if (_isPressingLeftClick)
+                {
+                    CheckForPlaceAction();
+                }
+            }
+        }
+
+        private void CheckForPlaceAction()
+        {
+            if (_currentTool == Tool.Rail)
+            {
+                if (IsOutOfRange())
+                {
+                    WarningManager.Instance.ShowWarning("This tile can't be modified");
+                    return;
+                }
+                else if (GridManager.Instance.Has(_gridIndex))
+                {
+                    var elem = GridManager.Instance.Get(_gridIndex);
+                    if (!elem.CanOverrides)
+                    {
+                        WarningManager.Instance.ShowWarning("This tile can't be modified");
+                        return;
+                    }
+
+                    if (elem.Exits == _tileRail.Exits)
+                    {
+                        return; // No new exit
+                    }
+
+                    if (!StoryManager.Instance.CanUseJunctions)
+                    {
+                        WarningManager.Instance.ShowWarning("You can't build junctions yet, use the eraser if you missplaced a rail");
+                        return;
+                    }
+                    elem.Exits = _tileRail.Exits;
+                    elem.transform.rotation = Quaternion.Euler(0f, 0f, _tileRail.transform.rotation.eulerAngles.z);
+                    elem.SR.sprite = _tileRail.SR.sprite;
+                    //Debug.Log($"[PLAC] Placed tile with exists {elem.Exits}");
+                }
+                else
+                {
+                    var go = Instantiate(_tileHint);
+                    var rail = go.GetComponent<Rail>();
+                    GridManager.Instance.Register(_gridIndex, rail);
+                    rail.IsHint = false;
+                    rail.SR.sortingLayerName = "Rail";
+                    rail.SR.color = Color.white;
+                    rail.Exits = _tileRail.Exits;
+                    //Debug.Log($"[PLAC] Placed tile with exists {rail.Exits}");
+                }
+            }
+            else if (_currentTool == Tool.Eraser)
+            {
+                if (GridManager.Instance.Has(_gridIndex))
+                {
+                    var tile = GridManager.Instance.Get(_gridIndex);
+
+                    if (tile.CanOverrides)
+                    {
+                        if (tile.Signal != null)
+                        {
+                            Destroy(tile.Signal.gameObject);
+                        }
+                        Destroy(tile.gameObject);
+                        GridManager.Instance.Delete(_gridIndex);
+
+                        UpdateSprite(); // Update rail sprite since the rail that was there don't exist anymore
+                    }
+                    else
+                    {
+                        WarningManager.Instance.ShowWarning("This tile can't be deleted");
+                    }
+                }
             }
         }
 
@@ -137,122 +214,65 @@ namespace LD59.Manager
 
         public void OnPlace(InputAction.CallbackContext value)
         {
+            if (value.phase == InputActionPhase.Canceled) _isPressingLeftClick = false;
+
             if (value.phase == InputActionPhase.Started && !IsClickOnUI())
             {
                 if (VNManager.Instance.IsStoryOngoing)
                 {
                     VNManager.Instance.DisplayNextDialogue();
                 }
-                else if (_currentTool == Tool.Rail)
+                else
                 {
-                    if (IsOutOfRange())
+                    _isPressingLeftClick = true;
+                    if (_currentTool == Tool.Signal)
                     {
-                        WarningManager.Instance.ShowWarning("This tile can't be modified");
-                        return;
-                    }
-                    else if (GridManager.Instance.Has(_gridIndex))
-                    {
-                        var elem = GridManager.Instance.Get(_gridIndex);
-                        if (!elem.CanOverrides)
+                        if (GridManager.Instance.Has(_gridIndex))
                         {
-                            WarningManager.Instance.ShowWarning("This tile can't be modified");
-                            return;
-                        }
+                            var tile = GridManager.Instance.Get(_gridIndex);
 
-                        if (elem.Exits == _tileRail.Exits)
-                        {
-                            return; // No new exit
-                        }
-
-                        if (!StoryManager.Instance.CanUseJunctions)
-                        {
-                            WarningManager.Instance.ShowWarning("You can't build junctions yet, use the eraser if you missplaced a rail");
-                            return;
-                        }
-                        elem.Exits = _tileRail.Exits;
-                        elem.transform.rotation = Quaternion.Euler(0f, 0f, _tileRail.transform.rotation.eulerAngles.z);
-                        elem.SR.sprite = _tileRail.SR.sprite;
-                        //Debug.Log($"[PLAC] Placed tile with exists {elem.Exits}");
-                    }
-                    else
-                    {
-                        var go = Instantiate(_tileHint);
-                        var rail = go.GetComponent<Rail>();
-                        GridManager.Instance.Register(_gridIndex, rail);
-                        rail.IsHint = false;
-                        rail.SR.sortingLayerName = "Rail";
-                        rail.SR.color = Color.white;
-                        rail.Exits = _tileRail.Exits;
-                        //Debug.Log($"[PLAC] Placed tile with exists {rail.Exits}");
-                    }
-                }
-                else if (_currentTool == Tool.Eraser)
-                {
-                    if (GridManager.Instance.Has(_gridIndex))
-                    {
-                        var tile = GridManager.Instance.Get(_gridIndex);
-
-                        if (tile.CanOverrides)
-                        {
-                            if (tile.Signal != null)
+                            if (tile.CanOverrides)
                             {
-                                Destroy(tile.Signal.gameObject);
-                            }
-                            Destroy(tile.gameObject);
-                            GridManager.Instance.Delete(_gridIndex);
-                        }
-                        else
-                        {
-                            WarningManager.Instance.ShowWarning("This tile can't be deleted");
-                        }
-                    }
-                }
-                else if (_currentTool == Tool.Signal)
-                {
-                    if (GridManager.Instance.Has(_gridIndex))
-                    {
-                        var tile = GridManager.Instance.Get(_gridIndex);
-
-                        if (tile.CanOverrides)
-                        {
-                            if (tile.HaveManyExits())
-                            {
-                                WarningManager.Instance.ShowWarning("Signals can't be placed on a junction");
+                                if (tile.HaveManyExits())
+                                {
+                                    WarningManager.Instance.ShowWarning("Signals can't be placed on a junction");
+                                }
+                                else
+                                {
+                                    if (tile.Signal == null)
+                                    {
+                                        var signalGo = Instantiate(_signalHint);
+                                        var signal = signalGo.GetComponent<Signal>();
+                                        signal.SR.color = Color.white;
+                                        signal.SR.sortingLayerName = "Signal";
+                                        tile.Signal = signal;
+                                    }
+                                }
                             }
                             else
                             {
-                                if (tile.Signal == null)
-                                {
-                                    var signalGo = Instantiate(_signalHint);
-                                    var signal = signalGo.GetComponent<Signal>();
-                                    signal.SR.color = Color.white;
-                                    signal.SR.sortingLayerName = "Signal";
-                                    tile.Signal = signal;
-                                }
+                                WarningManager.Instance.ShowWarning("This tile can't be modified");
                             }
                         }
                         else
                         {
-                            WarningManager.Instance.ShowWarning("This tile can't be modified");
+                            WarningManager.Instance.ShowWarning("A track must be placed before adding a signal");
                         }
                     }
-                    else
+                    else if (_currentTool == Tool.Configure)
                     {
-                        WarningManager.Instance.ShowWarning("A track must be placed before adding a signal");
-                    }
-                }
-                else if (_currentTool == Tool.Configure)
-                {
-                    if (GridManager.Instance.Has(_gridIndex))
-                    {
-                        var tile = GridManager.Instance.Get(_gridIndex);
-
-                        if (tile.Signal != null)
+                        if (GridManager.Instance.Has(_gridIndex))
                         {
-                            tile.Signal.IsGreen = !tile.Signal.IsGreen;
-                            tile.Signal.SR.sprite = tile.Signal.IsGreen ? SpriteManager.Instance.LightOn : SpriteManager.Instance.LightOff;
+                            var tile = GridManager.Instance.Get(_gridIndex);
+
+                            if (tile.Signal != null)
+                            {
+                                tile.Signal.IsGreen = !tile.Signal.IsGreen;
+                                tile.Signal.SR.sprite = tile.Signal.IsGreen ? SpriteManager.Instance.LightOn : SpriteManager.Instance.LightOff;
+                            }
                         }
                     }
+                    else CheckForPlaceAction();
                 }
             }
         }

@@ -22,15 +22,15 @@ MonoBehaviour:
     DepartureTime: 15
   - From: 2
     To: 3
-    DepartureTime: 27
+    DepartureTime: 37
   - From: 0
     To: 3
-    DepartureTime: 32
+    DepartureTime: 42
   - From: 2
     To: 3
-    DepartureTime: 40
+    DepartureTime: 50
   - From: 0
     To: 1
-    DepartureTime: 45
+    DepartureTime: 55
   FreeJunctions: 1
   FreeSignals: 1

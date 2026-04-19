@@ -52,6 +52,7 @@ namespace LD59.Manager
                 _trains.Clear();
                 _readyUp.SetActive(true);
                 _isPlaying = false;
+                for (int i = _timetableContainer.childCount - 1; i >= 0; i--) Destroy(_timetableContainer.GetChild(i).gameObject);
             });
 
             GameStateManager.Instance.OnReset.AddListener(() => { _storyIndex--; });

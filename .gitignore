@@ -1,5 +1,14 @@
+# Audacity files
+*-shm*
+*-wal*
+
+# VS solution
 *.slnx
+
+# Recovered scenes
 Assets/_Recovery*
+
+# Text mesh pro
 /[Aa]ssets/TextMesh Pro/
 /[Aa]ssets/TextMesh Pro.meta
 
