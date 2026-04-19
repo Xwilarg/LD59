@@ -35,7 +35,7 @@ namespace LD59.Map
         private float _timer = .5f;
         private const float TrainWheelOffset = .45f;
         private float TrainSpeed = 2f;
-        private const float SpeedIncrease = 2f;
+        private const float SpeedIncrease = 3f;
 
         private bool _isUnresponding;
         private Vector2 _lastVelocity;
