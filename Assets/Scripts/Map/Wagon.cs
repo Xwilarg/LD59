@@ -14,6 +14,9 @@ namespace LD59.Map
         private string _trainLabel;
         public string RawTrainLevel { private set; get; }
 
+        [SerializeField]
+        private AudioSource _trainNoise;
+
         public Vector2Int TilePos { set; get; }
         public Exit Direction { set; get; }
         public Station Destination { set; get; } = (Station)(-1);
@@ -52,6 +55,8 @@ namespace LD59.Map
             _nextPos = TilePos + Rail.GetDirection(Direction);
 
             CalculateBorders();
+
+            if (Leader == null) _trainNoise.Play();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -83,13 +88,13 @@ namespace LD59.Map
         {
             if (_isUnresponding)
             {
+                _trainNoise.volume = 0f;
                 //transform.position += (Vector3)_lastVelocity.normalized * Time.deltaTime; // TODO: Placeholder with deltatime since previous code wasn't working
                 return;
             }
 
             if (Leader == null)
             {
-
                 var speedIncr = 1f;
                 
                 if (GridManager.Instance.Has(TilePos))
@@ -99,6 +104,7 @@ namespace LD59.Map
                 }
                 
                 CurrTrainSpeed = Mathf.Clamp(CurrTrainSpeed + Time.deltaTime * SpeedIncrease * speedIncr, 0f, TrainSpeed);
+                _trainNoise.volume = CurrTrainSpeed / TrainSpeed;
             }
             else // Front wagon lead others behind
             {
