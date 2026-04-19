@@ -23,7 +23,7 @@ MonoBehaviour:
     DepartureTime: 12
     Type: 2
   - From: 0
-    To: 1
+    To: 3
     DepartureTime: 16
     Type: 0
   - From: 3
@@ -33,7 +33,7 @@ MonoBehaviour:
   - From: 2
     To: 3
     DepartureTime: 28
-    Type: 1
+    Type: 0
   - From: 0
     To: 1
     DepartureTime: 37
