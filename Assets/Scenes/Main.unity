@@ -2509,11 +2509,11 @@ MonoBehaviour:
   m_text: 'Junctions allow you to set the path of a train on an intersection.
 
     The
-    train will follow the blue line present on it (can be changed with configuration
-    tool)
+    train will follow the <color=#29f7f2>blue line</color> present on it (can be
+    changed with configuration tool)
 
-    Be sure that the path link from where the train is from to where it''s
-    going!'
+    Be sure that the path link from where the
+    train is from to where it''s going!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f1493050f4798574d9dc75584d2666e8, type: 2}
   m_sharedMaterial: {fileID: -5746385728274783522, guid: f1493050f4798574d9dc75584d2666e8, type: 2}
@@ -7452,11 +7452,12 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'To look where a train must go, look at its name!
 
-    First letter will
-    be the type of train, then second later the outbound station and the third the
-    inbound one.
+    <color=#1600fe>First
+    letter</color> will be the type of train, then <color=#3b8df2>second one</color>
+    the outbound station and the <color=#5fed2a>third one</color> the inbound one.
 
-    You can also use the station colors to help you! '
+    You
+    can also use the station colors to help you! '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f1493050f4798574d9dc75584d2666e8, type: 2}
   m_sharedMaterial: {fileID: -5746385728274783522, guid: f1493050f4798574d9dc75584d2666e8, type: 2}
@@ -8738,8 +8739,9 @@ MonoBehaviour:
   m_text: 'Stations are where you trains come and must go.
 
     To know what the
-    station do, you can look at the arrow next to it, green mean the station will
-    send train and read mean it''ll receive them'
+    station do, you can look at the arrow next to it, <color=green>green</color>
+    mean the station will send train and <color=red>red</color> mean it''ll receive
+    them'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f1493050f4798574d9dc75584d2666e8, type: 2}
   m_sharedMaterial: {fileID: -5746385728274783522, guid: f1493050f4798574d9dc75584d2666e8, type: 2}
