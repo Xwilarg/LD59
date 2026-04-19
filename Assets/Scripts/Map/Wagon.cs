@@ -33,11 +33,16 @@ namespace LD59.Map
         private bool _isUnresponding;
         private Vector2 _lastVelocity;
 
+        private BoxCollider2D _coll;
+        private Rigidbody2D _rb;
+
         public float CurrTrainSpeed { private set; get; }
 
         private void Awake()
         {
             _label.gameObject.SetActive(false);
+            _coll = GetComponent<BoxCollider2D>();
+            _rb = GetComponent<Rigidbody2D>();
         }
 
         private void Start()
@@ -173,6 +178,10 @@ namespace LD59.Map
         {
             GameStateManager.Instance.Loose(reason);
             _isUnresponding = true;
+
+            _coll.isTrigger = false;
+            _rb.bodyType = RigidbodyType2D.Dynamic;
+            CurrTrainSpeed = 0f;
         }
 
         public void DestroyTrain()

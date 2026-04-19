@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6201671351066058133}
   - component: {fileID: 2912877907966856631}
-  - component: {fileID: 4289064410194463609}
   - component: {fileID: -5187781407739484555}
+  - component: {fileID: 4289064410194463609}
+  - component: {fileID: 5201374876477131406}
   m_Layer: 6
   m_Name: Train
   m_TagString: Untagged
@@ -96,6 +97,21 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &-5187781407739484555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4796762676579367743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8192166bfd193947bc30e616b72a882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LD59.Map.Wagon
+  _forward: {fileID: 1830882231180917315}
+  _backward: {fileID: 6703339686545535292}
+  _label: {fileID: 7868029608397256190}
 --- !u!61 &4289064410194463609
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -126,7 +142,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -142,21 +158,33 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.22, y: 0.29}
   m_EdgeRadius: 0
---- !u!114 &-5187781407739484555
-MonoBehaviour:
+--- !u!50 &5201374876477131406
+Rigidbody2D:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4796762676579367743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8192166bfd193947bc30e616b72a882, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LD59.Map.Wagon
-  _forward: {fileID: 1830882231180917315}
-  _backward: {fileID: 6703339686545535292}
-  _label: {fileID: 7868029608397256190}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &4863205719165476458
 GameObject:
   m_ObjectHideFlags: 0
