@@ -62,7 +62,7 @@ namespace LD59.Manager
             {
                 Station.Arieta => "Ariëta",
                 Station.Sorena => "Sörena",
-                Station.Esie => "Ësie",
+                Station.Esie => "Esïe",
                 Station.Lai => "Laï",
                 _ => station.ToString()
             };
