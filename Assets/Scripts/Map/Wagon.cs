@@ -179,8 +179,8 @@ namespace LD59.Map
             GameStateManager.Instance.Loose(reason);
             _isUnresponding = true;
 
-            _coll.isTrigger = false;
-            _rb.bodyType = RigidbodyType2D.Dynamic;
+            //_coll.isTrigger = false;
+            //_rb.bodyType = RigidbodyType2D.Dynamic;
             CurrTrainSpeed = 0f;
         }
 
