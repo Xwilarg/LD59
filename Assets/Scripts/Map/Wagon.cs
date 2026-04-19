@@ -111,6 +111,7 @@ namespace LD59.Map
                             if (tile.Platform.Station != Destination)
                             {
                                 Crash($"Train reached {MapManager.StationToName(tile.Platform.Station)} instead of {MapManager.StationToName(Destination)}");
+                                return;
                             }
                             else
                             {
@@ -125,6 +126,7 @@ namespace LD59.Map
                         if (Direction == Exit.None)
                         {
                             Crash("Train reached missconfigured junction");
+                            return;
                         }
                         else
                         {
@@ -135,6 +137,7 @@ namespace LD59.Map
                             if (Leader != null && !Leader.IsPosOnTrack(_nextPos))
                             {
                                 Crash("Wagon got disconnected from its leading one");
+                                return;
                             }
                             else
                             {
@@ -145,11 +148,13 @@ namespace LD59.Map
                     else
                     {
                         Crash("Train reached missplaced track");
+                        return;
                     }
                 }
                 else
                 {
                     Crash("Train reached the end of the line");
+                    return;
                 }
             }
 
