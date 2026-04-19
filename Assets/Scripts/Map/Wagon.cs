@@ -35,7 +35,7 @@ namespace LD59.Map
         private float _timer = .5f;
         private const float TrainWheelOffset = .45f;
         private float TrainSpeed = 2f;
-        private const float SpeedIncrease = 4f;
+        private const float SpeedIncrease = 2f;
 
         private bool _isUnresponding;
         private Vector2 _lastVelocity;
@@ -122,7 +122,7 @@ namespace LD59.Map
                     if (rail.Signal != null && !rail.Signal.IsGreen) speedIncr = -1f; // Red light in front of us!
                 }
                 
-                CurrTrainSpeed = Mathf.Clamp(CurrTrainSpeed + Time.deltaTime * SpeedIncrease * speedIncr, 0f, TrainSpeed);
+                CurrTrainSpeed = Mathf.Clamp(CurrTrainSpeed + Time.deltaTime * (TrainSpeed * SpeedIncrease) * speedIncr, 0f, TrainSpeed);
                 _trainNoise.volume = CurrTrainSpeed / TrainSpeed;
             }
             else // Front wagon lead others behind
