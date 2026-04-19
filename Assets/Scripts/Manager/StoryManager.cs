@@ -106,7 +106,7 @@ namespace LD59.Manager
             {
                 VNManager.Instance.ShowStory(_outro, onDone: () => {}, updateVariables: (state) =>
                 {
-                    state["minutes"] = Mathf.RoundToInt(TotalTime % 60f);
+                    state["minutes"] = Mathf.RoundToInt(TotalTime / 60f);
                     state["seconds"] = (int)(TotalTime % 60);
                 });
                 return;
@@ -176,8 +176,6 @@ namespace LD59.Manager
             _trains.Reverse();
 
             MapManager.Instance.SetupStations(story.Trains.Select(x => x.From), story.Trains.Select(x => x.To));
-
-            _levelRefTime = Time.unscaledTime;
         }
 
         public void JumpToChapter(int index)
@@ -199,6 +197,7 @@ namespace LD59.Manager
             _timer = 0f;
             _isPlaying = true;
             _storyIndex++;
+            _levelRefTime = Time.unscaledTime;
 
             _readyUp.SetActive(false);
         }
@@ -211,11 +210,10 @@ namespace LD59.Manager
 
             if (_trains.All(x => x.Status == TrainStatus.Arrived))
             {
+                TotalTime += Time.unscaledTime - _levelRefTime;
                 _storyIndex++;
                 GameStateManager.Instance.OnReset.Invoke();
                 ShowNextStory();
-
-                TotalTime += Time.unscaledTime - _levelRefTime;
             }
         }
     }
