@@ -53,6 +53,9 @@ TagManager:
   - name: Train
     uniqueID: 2490871807
     locked: 0
+  - name: TrainHint
+    uniqueID: 3798816397
+    locked: 0
   - name: Signal
     uniqueID: 296019119
     locked: 0
