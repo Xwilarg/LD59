@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a569df54535ab14dbcbd68766ef51cd, type: 3}
+  m_Name: Story_06
+  m_EditorClassIdentifier: Assembly-CSharp::LD59.SO.StoryLevelInfo
+  Intro: {fileID: 4900000, guid: 371b97c73be652b4787e368e7fa86029, type: 3}
+  Trains:
+  - From: 2
+    To: 3
+    DepartureTime: 10
+    Type: 1
+  - From: 3
+    To: 1
+    DepartureTime: 12
+    Type: 2
+  - From: 0
+    To: 1
+    DepartureTime: 16
+    Type: 0
+  - From: 3
+    To: 1
+    DepartureTime: 24
+    Type: 0
+  - From: 2
+    To: 3
+    DepartureTime: 28
+    Type: 1
+  - From: 0
+    To: 1
+    DepartureTime: 37
+    Type: 1
+  - From: 2
+    To: 3
+    DepartureTime: 40
+    Type: 2
+  FreeJunctions: 1
+  FreeSignals: 1

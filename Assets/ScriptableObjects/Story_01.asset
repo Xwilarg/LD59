@@ -16,4 +16,7 @@ MonoBehaviour:
   Trains:
   - From: 0
     To: 1
-    DepartureTime: 11
+    DepartureTime: 10
+    Type: 0
+  FreeJunctions: 0
+  FreeSignals: 0
