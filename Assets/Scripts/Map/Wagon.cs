@@ -200,6 +200,7 @@ namespace LD59.Map
 
         public void Crash(string reason)
         {
+            Debug.LogWarning(reason);
             GameStateManager.Instance.Loose(reason);
             _isUnresponding = true;
 

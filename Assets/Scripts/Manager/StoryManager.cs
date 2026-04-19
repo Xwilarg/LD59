@@ -54,13 +54,15 @@ namespace LD59.Manager
 
             GameStateManager.Instance.OnReset.AddListener(() =>
             {
+                _storyIndex--;
+
                 _trains.Clear();
                 _readyUp.SetActive(true);
                 _isPlaying = false;
                 for (int i = _timetableContainer.childCount - 1; i >= 0; i--) Destroy(_timetableContainer.GetChild(i).gameObject);
-            });
 
-            GameStateManager.Instance.OnReset.AddListener(() => { _storyIndex--; });
+                SetupTrains();
+            });
         }
 
         private void Update()
@@ -120,30 +122,38 @@ namespace LD59.Manager
                     _signalBtn.interactable = true;
                 }
 
-                int id = 1;
-                foreach (var t in story.Trains)
-                {
-                    var label = $"{MapManager.Instance.ColorNameWithStation(t.From, t.From.ToString()[0].ToString())}{MapManager.Instance.ColorNameWithStation(t.To, t.To.ToString()[0].ToString())}{id:X2}";
-                    _trains.Add(new()
-                    {
-                        Status = TrainStatus.Waiting,
-                        Info = t,
-                        PlainLabel = $"{t.From.ToString()[0]}{t.To.ToString()[0]}{id:X2}",
-                        Label = label,
-                        Platform = MapManager.Instance.GetStationPlatform(t.From)
-                    });
-                    id++;
-                }
-                _trains.Reverse();
-
-                MapManager.Instance.SetupStations(story.Trains.Select(x => x.From), story.Trains.Select(x => x.To));
+                SetupTrains();
             });
+        }
+
+        private void SetupTrains()
+        {
+            if (_storyIndex >= _stories.Length) return;
+
+            var story = _stories[_storyIndex];
+            int id = 1;
+            foreach (var t in story.Trains)
+            {
+                var label = $"{MapManager.Instance.ColorNameWithStation(t.From, t.From.ToString()[0].ToString())}{MapManager.Instance.ColorNameWithStation(t.To, t.To.ToString()[0].ToString())}{id:X2}";
+                _trains.Add(new()
+                {
+                    Status = TrainStatus.Waiting,
+                    Info = t,
+                    PlainLabel = $"{t.From.ToString()[0]}{t.To.ToString()[0]}{id:X2}",
+                    Label = label,
+                    Platform = MapManager.Instance.GetStationPlatform(t.From)
+                });
+                id++;
+            }
+            _trains.Reverse();
+
+            MapManager.Instance.SetupStations(story.Trains.Select(x => x.From), story.Trains.Select(x => x.To));
         }
 
         public void JumpToChapter(int index)
         {
+            _storyIndex = index + 1;
             GameStateManager.Instance.OnReset.Invoke();
-            _storyIndex = index;
             ShowNextStory();
         }
 
