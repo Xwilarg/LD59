@@ -63,7 +63,7 @@ namespace LD59.Map
         {
             if (collision.TryGetComponent<Wagon>(out var wagon))
             {
-                if (wagon != Follower && wagon != Leader)
+                if (this != wagon)
                 {
                     Crash($"{RawTrainLevel} crashed into {wagon.RawTrainLevel}");
                 }
