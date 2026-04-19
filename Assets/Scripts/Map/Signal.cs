@@ -6,7 +6,7 @@ namespace LD59.Map
     {
         public SpriteRenderer SR { private set; get; }
 
-        public bool IsGreen { set; get; } = true;
+        public bool IsGreen { set; get; } = false;
 
         private void Awake()
         {

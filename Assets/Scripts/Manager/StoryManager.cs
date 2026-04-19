@@ -132,6 +132,7 @@ namespace LD59.Manager
 
             var story = _stories[_storyIndex];
             int id = 1;
+            _trains.Clear();
             foreach (var t in story.Trains)
             {
                 var label = $"{MapManager.Instance.ColorNameWithStation(t.From, t.From.ToString()[0].ToString())}{MapManager.Instance.ColorNameWithStation(t.To, t.To.ToString()[0].ToString())}{id:X2}";
