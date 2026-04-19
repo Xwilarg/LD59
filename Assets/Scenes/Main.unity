@@ -4223,6 +4223,7 @@ MonoBehaviour:
   _signalBtn: {fileID: 803317836}
   _timetableContainer: {fileID: 1436646085}
   _timetablePrefab: {fileID: 4966477191648096414, guid: 738ab464fc9d33240886caebb233c95b, type: 3}
+  _outro: {fileID: 4900000, guid: 312aa9900c7ace840aed3224873b0bba, type: 3}
 --- !u!114 &2061069996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4732,6 +4733,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8992041191953022378, guid: 01ea3043d741e8240a3c02a915dad51a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 7792891121216025904, guid: 01ea3043d741e8240a3c02a915dad51a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}

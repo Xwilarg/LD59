@@ -5,6 +5,7 @@ using Sketch.VN;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace LD59.Manager
@@ -25,9 +26,12 @@ namespace LD59.Manager
 
         [Header("Timetable")]
         [SerializeField]
-        public Transform _timetableContainer;
+        private Transform _timetableContainer;
         [SerializeField]
-        public GameObject _timetablePrefab;
+        private GameObject _timetablePrefab;
+
+        [SerializeField]
+        private TextAsset _outro;
 
         private float _timer;
         private bool _isPlaying = false;
@@ -95,6 +99,12 @@ namespace LD59.Manager
 
         public void ShowNextStory()
         {
+            if (_storyIndex >= _stories.Length)
+            {
+                VNManager.Instance.ShowStory(_outro, onDone: () => { SceneManager.LoadScene("Menu"); });
+                return;
+            }
+
             VNManager.Instance.ShowStory(_stories[_storyIndex].Intro, onDone: () =>
             {
                 _readyUp.SetActive(true);
