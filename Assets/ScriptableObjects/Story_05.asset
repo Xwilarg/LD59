@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a569df54535ab14dbcbd68766ef51cd, type: 3}
-  m_Name: Story_04
+  m_Name: Story_05
   m_EditorClassIdentifier: Assembly-CSharp::LD59.SO.StoryLevelInfo
-  Intro: {fileID: 4900000, guid: 0d2e1f0bd471e7e4c9afc4d3fa474013, type: 3}
+  Intro: {fileID: 4900000, guid: 70a32b1b5e706c64b817b36fc26f3ad0, type: 3}
   Trains:
-  - From: 0
-    To: 3
+  - From: 3
+    To: 1
     DepartureTime: 10
-    Type: 1
+    Type: 0
   - From: 2
-    To: 3
+    To: 1
     DepartureTime: 15
     Type: 0
-  - From: 0
-    To: 1
+  - From: 2
+    To: 3
     DepartureTime: 37
     Type: 0
-  - From: 2
+  - From: 3
     To: 1
     DepartureTime: 42
     Type: 0
@@ -35,12 +35,8 @@ MonoBehaviour:
     DepartureTime: 45
     Type: 0
   - From: 2
-    To: 3
-    DepartureTime: 53
-    Type: 0
-  - From: 0
     To: 1
-    DepartureTime: 57
+    DepartureTime: 53
     Type: 0
   FreeJunctions: 1
   FreeSignals: 1

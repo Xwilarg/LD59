@@ -1,4 +1,5 @@
 ﻿using LD59.Map;
+using LD59.SO;
 using UnityEngine;
 
 namespace LD59.Manager
@@ -9,6 +10,9 @@ namespace LD59.Manager
 
         [SerializeField]
         private Sprite _straight, _turn, _crossing, _tCrossing, _platform;
+
+        [SerializeField]
+        private Sprite _normalWagon, _commercialWagon, _highSpeedWagon;
 
         [SerializeField]
         private Sprite _lightOn, _lightOff;
@@ -34,6 +38,17 @@ namespace LD59.Manager
                 GetCrossingTDownUpRight(),
                 GetCrossingTUpLeftRight(),
                 GetCrossingTDownUpLeft()
+            };
+        }
+
+        public Sprite GetWagonSprite(TrainType type)
+        {
+            return type switch
+            {
+                TrainType.Normal => _normalWagon,
+                TrainType.Commercial => _commercialWagon,
+                TrainType.HighSpeed => _highSpeedWagon,
+                _ => throw new System.NotImplementedException()
             };
         }
 

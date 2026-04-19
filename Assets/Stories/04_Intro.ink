@@ -1,5 +1,4 @@
-The line to Laï is a great success and as thus had been expended!
-Trains will continue to leave the stations of Ariëta and Ësie, and Sörena will continue to receive trains
-However Laï will now both receive and send trains!
-Be careful at the station's timer before sending one to ensure no collission happen!
+Great job! Passagers are arriving to destination swiftly and Laï had established a commercial contract with Ariëta
+Commercial trains are long and especially slow don't hesitate to throw them on a separate set of rails to not clutter your whole network!
+For the rest, trains will continue to come from Ariëta and Ësie and going to Sörena and Laï
 -> END

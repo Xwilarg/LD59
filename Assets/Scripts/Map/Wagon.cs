@@ -1,4 +1,5 @@
 ﻿using LD59.Manager;
+using LD59.SO;
 using TMPro;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace LD59.Map
         [SerializeField]
         private TMP_Text _label;
         private string _trainLabel;
-        public string RawTrainLevel { private set; get; }
+        public string RawTrainLabel { private set; get; }
 
         [SerializeField]
         private AudioSource _trainNoise;
@@ -20,6 +21,8 @@ namespace LD59.Map
         public Vector2Int TilePos { set; get; }
         public Exit Direction { set; get; }
         public Station Destination { set; get; } = (Station)(-1);
+
+        public TrainType Type { set; get; }
 
         public Wagon Leader { set; get; }
         public Wagon Follower { set; get; }
@@ -31,7 +34,7 @@ namespace LD59.Map
 
         private float _timer = .5f;
         private const float TrainWheelOffset = .45f;
-        private const float TrainSpeed = 2f;
+        private float TrainSpeed = 2f;
         private const float SpeedIncrease = 4f;
 
         private bool _isUnresponding;
@@ -39,6 +42,7 @@ namespace LD59.Map
 
         private BoxCollider2D _coll;
         private Rigidbody2D _rb;
+        private SpriteRenderer _sr;
 
         public float CurrTrainSpeed { private set; get; }
 
@@ -47,6 +51,7 @@ namespace LD59.Map
             _label.gameObject.SetActive(false);
             _coll = GetComponent<BoxCollider2D>();
             _rb = GetComponent<Rigidbody2D>();
+            _sr = GetComponent<SpriteRenderer>();
         }
 
         private void Start()
@@ -55,6 +60,15 @@ namespace LD59.Map
             _nextPos = TilePos + Rail.GetDirection(Direction);
 
             CalculateBorders();
+
+            _sr.sprite = SpriteManager.Instance.GetWagonSprite(Type);
+            TrainSpeed = Type switch
+            {
+                TrainType.Normal => 2f,
+                TrainType.HighSpeed => 4f,
+                TrainType.Commercial => .75f,
+                _ => throw new System.NotImplementedException()
+            };
 
             if (Leader == null) _trainNoise.Play();
         }
@@ -65,17 +79,22 @@ namespace LD59.Map
             {
                 if (wagon != Follower && wagon != Leader)
                 {
-                    Crash($"{RawTrainLevel} crashed into {wagon.RawTrainLevel}");
+                    Crash($"{RawTrainLabel} crashed into {wagon.RawTrainLabel}");
                 }
             }
         }
 
         public void SetLabel(string text, string rawText)
         {
-            RawTrainLevel = rawText;
+            RawTrainLabel = rawText;
             _trainLabel = text;
             _label.gameObject.SetActive(true);
             _label.text = text;
+        }
+
+        public void SetRawLabel(string rawText)
+        {
+            RawTrainLabel = rawText;
         }
 
         private void CalculateBorders()
@@ -125,7 +144,7 @@ namespace LD59.Map
                     // Debug.Log($"Tile at {TilePos} have the following exists: {tile.Exits}");
                     if (tile.Exits.HasFlag(Revert()))
                     {
-                        if (tile.Platform != null)
+                        if (tile.Platform != null && Leader == null) // Only leading wagon can do playform check
                         {
                             if (tile.Platform.Station != Destination)
                             {

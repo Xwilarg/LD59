@@ -87,7 +87,7 @@ namespace LD59.Manager
                     {
                         t.Status = TrainStatus.Launched;
                         t.Platform.AssociatedRail.ResetTimer();
-                        MapManager.Instance.SpawnTrain(t.Info.From, t.Info.To, t.Label, t.PlainLabel);
+                        MapManager.Instance.SpawnTrain(t.Info.From, t.Info.To, t.Label, t.PlainLabel, t.Info.Type);
                         t.Annoucement.SetDescription($"From {MapManager.Instance.ColorNameWithStation(t.Info.From, MapManager.StationToName(t.Info.From))}\nTo {MapManager.Instance.ColorNameWithStation(t.Info.To, MapManager.StationToName(t.Info.To))}");
                         WarningManager.Instance.ShowWarning($"{t.PlainLabel} is leaving from {MapManager.StationToName(t.Info.From)} to {MapManager.StationToName(t.Info.To)}");
                     }
@@ -126,6 +126,28 @@ namespace LD59.Manager
             });
         }
 
+        private string TypeToString(TrainType type)
+        {
+            return type switch
+            {
+                TrainType.Normal => "p",
+                TrainType.Commercial => "c",
+                TrainType.HighSpeed => "h",
+                _ => throw new System.NotImplementedException()
+            };
+        }
+
+        private Color TypeToColor(TrainType type)
+        {
+            return type switch
+            {
+                TrainType.Normal => Color.blue,
+                TrainType.Commercial => Color.orange,
+                TrainType.HighSpeed => Color.red,
+                _ => throw new System.NotImplementedException()
+            };
+        }
+
         private void SetupTrains()
         {
             if (_storyIndex >= _stories.Length) return;
@@ -135,12 +157,12 @@ namespace LD59.Manager
             _trains.Clear();
             foreach (var t in story.Trains)
             {
-                var label = $"{MapManager.Instance.ColorNameWithStation(t.From, t.From.ToString()[0].ToString())}{MapManager.Instance.ColorNameWithStation(t.To, t.To.ToString()[0].ToString())}{id:X2}";
+                var label = $"{MapManager.Instance.ColorWith(TypeToColor(t.Type), TypeToString(t.Type))}{MapManager.Instance.ColorNameWithStation(t.From, t.From.ToString()[0].ToString())}{MapManager.Instance.ColorNameWithStation(t.To, t.To.ToString()[0].ToString())}{id:X2}";
                 _trains.Add(new()
                 {
                     Status = TrainStatus.Waiting,
                     Info = t,
-                    PlainLabel = $"{t.From.ToString()[0]}{t.To.ToString()[0]}{id:X2}",
+                    PlainLabel = $"{TypeToString(t.Type)}{t.From.ToString()[0]}{t.To.ToString()[0]}{id:X2}",
                     Label = label,
                     Platform = MapManager.Instance.GetStationPlatform(t.From)
                 });

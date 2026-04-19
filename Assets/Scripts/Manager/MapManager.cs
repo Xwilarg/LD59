@@ -1,7 +1,9 @@
 ﻿using LD59.Map;
+using LD59.SO;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace LD59.Manager
 {
@@ -18,7 +20,7 @@ namespace LD59.Manager
         private readonly List<Platform> _platforms = new();
         private readonly List<Wagon> Trains = new();
 
-        private const int PlatformLength = 5;
+        private const int PlatformLength = 10;
 
         private void Awake()
         {
@@ -62,17 +64,22 @@ namespace LD59.Manager
                 Station.Sorena => "Sörena",
                 Station.Esie => "Ësie",
                 Station.Lai => "Laï",
-                _ => "Unnamed"
+                _ => station.ToString()
             };
         }
 
         public Platform GetStationPlatform(Station station)
             => _platforms.First(x => x.Station == station);
 
+        public string ColorWith(Color target, string text)
+        {
+            return $"<color=#{Mathf.RoundToInt(target.r * 255):X2}{Mathf.RoundToInt(target.g * 255):X2}{Mathf.RoundToInt(target.b * 255):X2}>{text}</color>";
+        }
+
         public string ColorNameWithStation(Station station, string text)
         {
             var target = _platforms.First(x => x.Station == station).Color;
-            return $"<color=#{Mathf.RoundToInt(target.r * 255):X2}{Mathf.RoundToInt(target.g * 255):X2}{Mathf.RoundToInt(target.b * 255):X2}>{text}</color>";
+            return ColorWith(target, text);
         }
 
         private void PlacePlatform(Vector2Int pos, Exit usedExit, Station station, Color color)
@@ -97,7 +104,7 @@ namespace LD59.Manager
                     _platforms.Add(platform);
                     rail.SetLabel(station, color);
                 }
-                else if (i == PlatformLength - 1) rail.Platform = platform;
+                else if (i == 4) rail.Platform = platform;
             }
         }
 
@@ -117,24 +124,29 @@ namespace LD59.Manager
             Trains.Clear();
         }
 
-        public void SpawnTrain(Station from, Station to, string label, string rawLabel)
+        public void SpawnTrain(Station from, Station to, string label, string rawLabel, TrainType train)
         {
             var platform = _platforms.First(x => x.Station == from);
             Wagon lastWagon = null;
             var prolDir = -Rail.GetDirection(platform.Exit);
 
-            for (int i = 0; i < PlatformLength; i++)
+            for (int i = 0; i < (train == TrainType.Commercial ? 10 : 5); i++)
             {
                 var trainGo = Instantiate(_trainPrefab, (Vector2)(platform.PositionStart + (prolDir * i)) * GridManager.GridWorld, Quaternion.identity);
                 var wagon = trainGo.GetComponent<Wagon>();
                 wagon.TilePos = platform.PositionStart + (prolDir * i);
                 wagon.Direction = platform.Exit;
+                wagon.Type = train;
 
                 if (i == 0)
                 {
                     wagon.SetLabel(label, rawLabel);
                     wagon.Destination = to;
                     Trains.Add(wagon);
+                }
+                else
+                {
+                    wagon.SetRawLabel(rawLabel);
                 }
 
                 if (lastWagon != null)

@@ -20,5 +20,13 @@ namespace LD59.SO
         public Station From;
         public Station To;
         public float DepartureTime;
+        public TrainType Type;
+    }
+
+    public enum TrainType
+    {
+        Normal,
+        Commercial,
+        HighSpeed
     }
 }
