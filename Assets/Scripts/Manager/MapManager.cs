@@ -66,6 +66,9 @@ namespace LD59.Manager
             };
         }
 
+        public Platform GetStationPlatform(Station station)
+            => _platforms.First(x => x.Station == station);
+
         public string ColorNameWithStation(Station station, string text)
         {
             var target = _platforms.First(x => x.Station == station).Color;

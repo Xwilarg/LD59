@@ -1,4 +1,5 @@
-﻿using LD59.SO;
+﻿using LD59.Map;
+using LD59.SO;
 using LD59.VN;
 using Sketch.VN;
 using System.Collections.Generic;
@@ -63,7 +64,7 @@ namespace LD59.Manager
             if (!_isPlaying) return;
 
             _timer += Time.deltaTime;
-            foreach (var t in _trains)
+            foreach (var t in _trains) // Deal with most far away trains first, for timer management reasons
             {
                 if (t.Status == TrainStatus.Waiting && _timer >= t.Info.DepartureTime - 10f)
                 {
@@ -74,12 +75,20 @@ namespace LD59.Manager
                     t.Annoucement.SetDescription($"Departure announced from {MapManager.Instance.ColorNameWithStation(t.Info.From, MapManager.StationToName(t.Info.From))} to {MapManager.Instance.ColorNameWithStation(t.Info.To, MapManager.StationToName(t.Info.To))}");
                     WarningManager.Instance.ShowWarning($"{t.PlainLabel} is leaving in 10 seconds from {MapManager.StationToName(t.Info.From)} to {MapManager.StationToName(t.Info.To)}");
                 }
-                else if (t.Status == TrainStatus.Announced && _timer >= t.Info.DepartureTime)
+                else if (t.Status == TrainStatus.Announced)
                 {
-                    t.Status = TrainStatus.Launched;
-                    MapManager.Instance.SpawnTrain(t.Info.From, t.Info.To, t.Label, t.PlainLabel);
-                    t.Annoucement.SetDescription($"From {MapManager.Instance.ColorNameWithStation(t.Info.From, MapManager.StationToName(t.Info.From))}\nTo {MapManager.Instance.ColorNameWithStation(t.Info.To, MapManager.StationToName(t.Info.To))}");
-                    WarningManager.Instance.ShowWarning($"{t.PlainLabel} is leaving from {MapManager.StationToName(t.Info.From)} to {MapManager.StationToName(t.Info.To)}");
+                    if (_timer >= t.Info.DepartureTime)
+                    {
+                        t.Status = TrainStatus.Launched;
+                        t.Platform.AssociatedRail.ResetTimer();
+                        MapManager.Instance.SpawnTrain(t.Info.From, t.Info.To, t.Label, t.PlainLabel);
+                        t.Annoucement.SetDescription($"From {MapManager.Instance.ColorNameWithStation(t.Info.From, MapManager.StationToName(t.Info.From))}\nTo {MapManager.Instance.ColorNameWithStation(t.Info.To, MapManager.StationToName(t.Info.To))}");
+                        WarningManager.Instance.ShowWarning($"{t.PlainLabel} is leaving from {MapManager.StationToName(t.Info.From)} to {MapManager.StationToName(t.Info.To)}");
+                    }
+                    else
+                    {
+                        t.Platform.AssociatedRail.SetTimer(t.Info.DepartureTime - _timer);
+                    }
                 }
             }
         }
@@ -110,10 +119,12 @@ namespace LD59.Manager
                         Status = TrainStatus.Waiting,
                         Info = t,
                         PlainLabel = $"{t.From.ToString()[0]}{t.To.ToString()[0]}{id:X2}",
-                        Label = label
+                        Label = label,
+                        Platform = MapManager.Instance.GetStationPlatform(t.From)
                     });
                     id++;
                 }
+                _trains.Reverse();
 
                 MapManager.Instance.SetupStations(story.Trains.Select(x => x.From), story.Trains.Select(x => x.To));
             });
@@ -156,6 +167,8 @@ namespace LD59.Manager
         public StoryTrain Info;
         public string PlainLabel;
         public string Label;
+
+        public Platform Platform;
 
         public TrainPopup Annoucement;
     }

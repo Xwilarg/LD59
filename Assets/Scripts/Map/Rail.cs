@@ -21,6 +21,12 @@ namespace LD59.Map
         [SerializeField]
         private SpriteRenderer _sendHint;
 
+        [SerializeField]
+        private Transform _contentContainer;
+
+        [SerializeField]
+        private TMP_Text _timer;
+
         private readonly List<ExitPair> _allPaths = new();
         private int _pathIndex;
 
@@ -30,6 +36,7 @@ namespace LD59.Map
             set
             {
                 _exits = value;
+
                 UpdateRender();
             }
             get => _exits;
@@ -51,6 +58,12 @@ namespace LD59.Map
             _labelContainer.SetActive(false);
 
             _sendHint.gameObject.SetActive(false);
+            _timer.gameObject.SetActive(false);
+        }
+
+        private void Start()
+        {
+            GameStateManager.Instance.OnReset.AddListener(ResetTimer);
         }
 
         public void SetLabel(Station station, Color color)
@@ -78,6 +91,22 @@ namespace LD59.Map
         {
             _pathIndex = (_pathIndex + 1) % _allPaths.Count;
             UpdateRender();
+        }
+
+        private void Update()
+        {
+            _contentContainer.rotation = Quaternion.identity;
+        }
+
+        public void ResetTimer()
+        {
+            _timer.gameObject.SetActive(false);
+        }
+
+        public void SetTimer(float value)
+        {
+            _timer.gameObject.SetActive(true);
+            _timer.text = $"{Mathf.FloorToInt(value):00}";
         }
 
         public void UpdateRender()
