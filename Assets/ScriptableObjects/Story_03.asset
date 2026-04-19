@@ -28,12 +28,9 @@ MonoBehaviour:
     DepartureTime: 32
   - From: 2
     To: 3
-    DepartureTime: 35
+    DepartureTime: 40
   - From: 0
     To: 1
-    DepartureTime: 38
-  - From: 0
-    To: 3
-    DepartureTime: 50
-  FreeJunctions: 0
+    DepartureTime: 45
+  FreeJunctions: 1
   FreeSignals: 1

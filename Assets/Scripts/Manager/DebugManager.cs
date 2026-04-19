@@ -18,5 +18,10 @@ namespace LD59.Manager
         {
             StoryManager.Instance.LaunchTrains();
         }
+
+        public void ShowStory(int index)
+        {
+            StoryManager.Instance.JumpToChapter(index);
+        }
     }
 }

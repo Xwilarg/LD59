@@ -99,31 +99,36 @@ namespace LD59.Manager
                 {
                     _signalBtn.interactable = true;
                 }
+
+                int id = 1;
+                foreach (var t in story.Trains)
+                {
+                    var label = $"{MapManager.Instance.ColorNameWithStation(t.From, t.From.ToString()[0].ToString())}{MapManager.Instance.ColorNameWithStation(t.To, t.To.ToString()[0].ToString())}{id:X2}";
+                    _trains.Add(new()
+                    {
+                        Status = TrainStatus.Waiting,
+                        Info = t,
+                        PlainLabel = $"{t.From.ToString()[0]}{t.To.ToString()[0]}{id:X2}",
+                        Label = label
+                    });
+                    id++;
+                }
+
+                MapManager.Instance.SetupStations(story.Trains.Select(x => x.From), story.Trains.Select(x => x.To));
             });
+        }
+
+        public void JumpToChapter(int index)
+        {
+            GameStateManager.Instance.OnReset.Invoke();
+            _storyIndex = index;
+            ShowNextStory();
         }
 
         public void LaunchTrains()
         {
             _timer = 0f;
             _isPlaying = true;
-
-            var story = _stories[_storyIndex];
-            int id = 1;
-            foreach (var t in story.Trains)
-            {
-                var label = $"{MapManager.Instance.ColorNameWithStation(t.From, t.From.ToString()[0].ToString())}{MapManager.Instance.ColorNameWithStation(t.To, t.To.ToString()[0].ToString())}{id:X2}";
-                _trains.Add(new()
-                {
-                    Status = TrainStatus.Waiting,
-                    Info = t,
-                    PlainLabel = $"{t.From.ToString()[0]}{t.To.ToString()[0]}{id:X2}",
-                    Label = label
-                });
-                id++;
-            }
-
-            MapManager.Instance.SetupStations(story.Trains.Select(x => x.From), story.Trains.Select(x => x.To));
-
             _storyIndex++;
 
             _readyUp.SetActive(false);
