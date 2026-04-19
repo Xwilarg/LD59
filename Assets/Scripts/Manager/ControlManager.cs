@@ -369,11 +369,17 @@ namespace LD59.Manager
                     {
                         if (_currentTool == Tool.Configure) _currentTool = Tool.Rail;
                         else _currentTool++;
+
+                        if (_currentTool == Tool.Signal && !StoryManager.Instance.CanUseSignals) _currentTool = Tool.Eraser;
+                        if (_currentTool == Tool.Configure && !StoryManager.Instance.CanUseJunctions) _currentTool = Tool.Rail;
                     }
                     else
                     {
                         if (_currentTool == Tool.Rail) _currentTool = Tool.Configure;
                         else _currentTool--;
+
+                        if (_currentTool == Tool.Signal && !StoryManager.Instance.CanUseSignals) _currentTool = Tool.Rail;
+                        if (_currentTool == Tool.Configure && !StoryManager.Instance.CanUseJunctions) _currentTool = Tool.Eraser;
                     }
 
                     switch (_currentTool)
