@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace LD59.Manager
 {
@@ -7,6 +8,9 @@ namespace LD59.Manager
     {
         [SerializeField]
         private GameObject _menu;
+
+        [SerializeField]
+        private Button _allowPause;
 
         private void Awake()
         {
@@ -21,6 +25,12 @@ namespace LD59.Manager
         public void BackToMainMenu()
         {
             SceneManager.LoadScene("Menu");
+        }
+
+        public void AllowPause()
+        {
+            _allowPause.interactable = false;
+            GameStateManager.Instance.IsPausedAllowed = true;
         }
     }
 }

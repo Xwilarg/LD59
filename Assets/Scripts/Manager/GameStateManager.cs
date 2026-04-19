@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 namespace LD59.Manager
 {
@@ -7,15 +8,24 @@ namespace LD59.Manager
     {
         public static GameStateManager Instance { private set; get; }
 
+        [SerializeField]
+        private GameObject _pauseText;
+
+        public bool IsPausedAllowed { set; get; }
+
         private void Awake()
         {
             Instance = this;
+
+            _pauseText.SetActive(false);
         }
 
         public bool IsGameOver { private set; get; }
 
         public UnityEvent OnReset { get; } = new();
         private float _looseTimer;
+
+        private bool _isPaused;
 
         public void Loose(string reason)
         {
@@ -24,6 +34,16 @@ namespace LD59.Manager
             IsGameOver = true;
             WarningManager.Instance.ShowWarning($"An accident happened: {reason}");
             _looseTimer = 1f;
+        }
+
+        public void TogglePause(InputAction.CallbackContext value)
+        {
+            if (value.phase == InputActionPhase.Started && IsPausedAllowed)
+            {
+                _isPaused = !_isPaused;
+                Time.timeScale = _isPaused ? 0f : 1f;
+                _pauseText.SetActive(_isPaused);
+            }
         }
 
         private void Update()
