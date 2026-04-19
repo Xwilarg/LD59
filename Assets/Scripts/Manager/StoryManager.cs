@@ -103,7 +103,7 @@ namespace LD59.Manager
         {
             if (_storyIndex >= _stories.Length)
             {
-                VNManager.Instance.ShowStory(_outro, onDone: () => { SceneManager.LoadScene("Menu"); });
+                VNManager.Instance.ShowStory(_outro, onDone: () => {});
                 return;
             }
 
